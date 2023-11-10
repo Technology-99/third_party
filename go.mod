@@ -12,7 +12,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.3.0
-	github.com/robfig/cron/v3 v3.0.1
 	github.com/sony/sonyflake v1.2.0
 	github.com/zeromicro/go-zero v1.5.5
 	google.golang.org/grpc v1.57.0
