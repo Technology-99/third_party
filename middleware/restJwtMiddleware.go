@@ -74,7 +74,7 @@ func (m *JwtVerifyMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		//租户权限个人验证、子账号验证个人与域内组权限
 		if claims.UserId != 1 {
 			domain := claims.TenantID
-			ok, err := m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, claims.UserId), fmt.Sprintf(commKey.RBAC_DOMAIN, claims.TenantID), m.SvcName+":"+r.RequestURI, r.Method)
+			ok, err := m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, claims.UserId), fmt.Sprintf(commKey.RBAC_DOMAIN, claims.TenantID), r.RequestURI, r.Method)
 			if err != nil {
 				resp.Code = http.StatusInternalServerError
 				resp.Msg = "checkPermission is invalid"
@@ -96,7 +96,7 @@ func (m *JwtVerifyMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 					return
 				}
 				//在验证组权限
-				ok, err = m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, claims.UserId), fmt.Sprintf(commKey.RBAC_DOMAIN, domain), m.SvcName+":"+r.RequestURI, r.Method)
+				ok, err = m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, claims.UserId), fmt.Sprintf(commKey.RBAC_DOMAIN, domain), r.RequestURI, r.Method)
 				if err != nil {
 					resp.Code = http.StatusInternalServerError
 					resp.Msg = "checkPermission is invalid"
