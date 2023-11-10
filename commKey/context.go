@@ -14,3 +14,8 @@ const (
 	CONTEXT_KEY_TENANTID  = "tenant_id"
 	CONTEXT_KEY_ACCESSKEY = "accessKey"
 )
+
+const (
+	RBAC_DOMAIN = "TID_%d"
+	RBAC_SUB    = "UID_%d"
+)

@@ -24,6 +24,7 @@ const (
 	ACCESS_CODE_WRONG      int32 = 2007
 	GROUP_ALREADY_EXISTS   int32 = 2008
 	ACCESS_TOO_FAST        int32 = 2009
+	DELETE_ADMIN_WRONG     int32 = 2010
 
 	NOT_FOUND int32 = 3001
 
@@ -33,7 +34,6 @@ const (
 	METADATA_NOT_FOUND      int32 = 4005
 	AUTHORIZATION_NOT_FOUND int32 = 4006
 	ACCESSKEY_NOT_FOUND     int32 = 4007
-	WRONG_CAPTCHA           int32 = 4008
 
 	SERVER_WRONG int32 = 5000
 
@@ -57,8 +57,9 @@ var WrongMessageEn = map[int32]string{
 	ACCESS_PWD_WRONG:       "incorrect username or password",
 	ACCESS_KEY_INVALID:     "AccessKey is invalid",
 	ACCOUNT_ALREADY_EXISTS: "user already exists",
+	ACCESS_CODE_WRONG:      "verification code error",
 	ACCESS_TOO_FAST:        "Access too fast",
-	WRONG_CAPTCHA:          "wrong captcha",
+	GROUP_ALREADY_EXISTS:   "user group already exists",
 
 	NOT_FOUND:               "record not found",
 	FAIL:                    "fail",
@@ -67,6 +68,7 @@ var WrongMessageEn = map[int32]string{
 	METADATA_NOT_FOUND:      "metadata not found",
 	AUTHORIZATION_NOT_FOUND: "authorization not found",
 	ACCESSKEY_NOT_FOUND:     "accesskey not found",
+	DELETE_ADMIN_WRONG:      "super administrator cannot be deleted",
 
 	SERVER_WRONG: "Internal Server Error",
 
@@ -95,7 +97,9 @@ var WrongMessageZh = map[int32]string{
 	ACCESS_KEY_INVALID:     "AccessKey无效",
 	ACCOUNT_ALREADY_EXISTS: "用户已存在",
 	ACCESS_TOO_FAST:        "太频繁了",
-	WRONG_CAPTCHA:          "验证码错误",
+	ACCESS_CODE_WRONG:      "验证码错误",
+	DELETE_ADMIN_WRONG:     "超级管理员不可删除",
+	GROUP_ALREADY_EXISTS:   "用户组已存在",
 
 	NOT_FOUND: "记录未找到",
 
