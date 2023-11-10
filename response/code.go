@@ -35,6 +35,7 @@ const (
 	METADATA_NOT_FOUND      int32 = 4005
 	AUTHORIZATION_NOT_FOUND int32 = 4006
 	ACCESSKEY_NOT_FOUND     int32 = 4007
+	WRONG_CAPTCHA           int32 = 4008
 
 	SERVER_WRONG int32 = 5000
 
@@ -70,7 +71,9 @@ var WrongMessageEn = map[int32]string{
 	METADATA_NOT_FOUND:      "metadata not found",
 	AUTHORIZATION_NOT_FOUND: "authorization not found",
 	ACCESSKEY_NOT_FOUND:     "accesskey not found",
-	DELETE_ADMIN_WRONG:      "super administrator cannot be deleted",
+	WRONG_CAPTCHA:           "wrong captcha",
+
+	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
 	SERVER_WRONG: "Internal Server Error",
 
@@ -112,6 +115,7 @@ var WrongMessageZh = map[int32]string{
 	METADATA_NOT_FOUND:      "没找到metadata",
 	AUTHORIZATION_NOT_FOUND: "没找到验证头",
 	ACCESSKEY_NOT_FOUND:     "没找到用户appid",
+	WRONG_CAPTCHA:           "验证码错误",
 
 	SERVER_WRONG: "服务器错误",
 
