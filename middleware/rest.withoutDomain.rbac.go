@@ -30,7 +30,7 @@ func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		object := r.RequestURI
 		action := r.Method
 
-		ok, err := m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, subect), m.SvcName+":"+object, action)
+		ok, err := m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, subect), object, action)
 		if err != nil {
 			logx.Errorf("checkPermission error: %v", err)
 			CommonErrResponse(w, r, response.SERVER_WRONG)

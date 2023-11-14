@@ -33,6 +33,7 @@ func (m *RestJwtAuthInterceptorMiddleware) Handle(next http.HandlerFunc) http.Ha
 		}
 		token := authToken[7:]
 		key := fmt.Sprintf(cache_key.ACCESS_TOKEN_KEY, m.SvcName, r.Header.Get(commKey.HANDER_ACCESSKEY))
+		logx.Infof("key: %v", key)
 		pubKey, err := m.Redis.Get(key)
 		if err != nil {
 			logx.Errorf("pubKey error: %v", err)
