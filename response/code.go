@@ -26,6 +26,7 @@ const (
 	ACCESS_TOO_FAST        int32 = 2009
 	DELETE_ADMIN_WRONG     int32 = 2010
 	CANT_CREATE_GROUP      int32 = 2011
+	CANT_CREATE_ACCOUNT    int32 = 2012
 
 	NOT_FOUND int32 = 3001
 
@@ -63,6 +64,7 @@ var WrongMessageEn = map[int32]string{
 	ACCESS_TOO_FAST:        "Access too fast",
 	GROUP_ALREADY_EXISTS:   "user group already exists",
 	CANT_CREATE_GROUP:      "Super administrator cannot create groups",
+	CANT_CREATE_ACCOUNT:    "unable to create sub-account, please use root account to create one",
 
 	NOT_FOUND:               "record not found",
 	FAIL:                    "fail",
@@ -106,6 +108,7 @@ var WrongMessageZh = map[int32]string{
 	DELETE_ADMIN_WRONG:     "超级管理员不可删除",
 	GROUP_ALREADY_EXISTS:   "用户组已存在",
 	CANT_CREATE_GROUP:      "超级管理员不可创建组",
+	CANT_CREATE_ACCOUNT:    "无法创建子账号,请用根账号创建",
 
 	NOT_FOUND: "记录未找到",
 
