@@ -18,7 +18,7 @@ const (
 
 	ACCOUNT_AUTH_KEY = "%s:accountAuth-%d"
 
-	EMS_AUTH_KEY = "%s:emsAuth-%d"
+	EMS_AUTH_KEY = "%s:emsAuth-%s"
 
-	SMS_AUTH_KEY = "%s:smsAuth-%d"
+	SMS_AUTH_KEY = "%s:smsAuth-%s"
 )
