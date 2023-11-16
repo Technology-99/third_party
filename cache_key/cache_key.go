@@ -21,4 +21,8 @@ const (
 	EMS_AUTH_KEY = "%s:emsAuth-%s"
 
 	SMS_AUTH_KEY = "%s:smsAuth-%s"
+
+	WECHAT_KEY_CRON = "%s:wechatCron-TID%d-key-%s"
+
+	WECHAT_USER_TOKEN = "%s:wechat-usertokenn-%s"
 )

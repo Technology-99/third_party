@@ -30,13 +30,14 @@ const (
 
 	NOT_FOUND int32 = 3001
 
-	FAIL                    int32 = 4000
-	WRONG_PARAM             int32 = 4001
-	NOT_FOUND_METHOD        int32 = 4004
-	METADATA_NOT_FOUND      int32 = 4005
-	AUTHORIZATION_NOT_FOUND int32 = 4006
-	ACCESSKEY_NOT_FOUND     int32 = 4007
-	WRONG_CAPTCHA           int32 = 4008
+	FAIL                         int32 = 4000
+	WRONG_PARAM                  int32 = 4001
+	NOT_FOUND_METHOD             int32 = 4004
+	METADATA_NOT_FOUND           int32 = 4005
+	AUTHORIZATION_NOT_FOUND      int32 = 4006
+	ACCESSKEY_NOT_FOUND          int32 = 4007
+	WRONG_CAPTCHA                int32 = 4008
+	WECHAT_ERR_USERTOKEN_EXPIRED int32 = 4009
 
 	SERVER_WRONG int32 = 5000
 
@@ -66,14 +67,15 @@ var WrongMessageEn = map[int32]string{
 	CANT_CREATE_GROUP:      "Super administrator cannot create groups",
 	CANT_CREATE_ACCOUNT:    "unable to create sub-account, please use root account to create one",
 
-	NOT_FOUND:               "record not found",
-	FAIL:                    "fail",
-	NOT_FOUND_METHOD:        "request method not found",
-	WRONG_PARAM:             "param error",
-	METADATA_NOT_FOUND:      "metadata not found",
-	AUTHORIZATION_NOT_FOUND: "authorization not found",
-	ACCESSKEY_NOT_FOUND:     "accesskey not found",
-	WRONG_CAPTCHA:           "wrong captcha",
+	NOT_FOUND:                    "record not found",
+	FAIL:                         "fail",
+	NOT_FOUND_METHOD:             "request method not found",
+	WRONG_PARAM:                  "param error",
+	METADATA_NOT_FOUND:           "metadata not found",
+	AUTHORIZATION_NOT_FOUND:      "authorization not found",
+	ACCESSKEY_NOT_FOUND:          "accesskey not found",
+	WRONG_CAPTCHA:                "wrong captcha",
+	WECHAT_ERR_USERTOKEN_EXPIRED: "wechat user_token is expired",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
@@ -112,13 +114,14 @@ var WrongMessageZh = map[int32]string{
 
 	NOT_FOUND: "记录未找到",
 
-	FAIL:                    "请求失败",
-	WRONG_PARAM:             "参数错误",
-	NOT_FOUND_METHOD:        "未找到请求方法",
-	METADATA_NOT_FOUND:      "没找到metadata",
-	AUTHORIZATION_NOT_FOUND: "没找到验证头",
-	ACCESSKEY_NOT_FOUND:     "没找到用户appid",
-	WRONG_CAPTCHA:           "验证码错误",
+	FAIL:                         "请求失败",
+	WRONG_PARAM:                  "参数错误",
+	NOT_FOUND_METHOD:             "未找到请求方法",
+	METADATA_NOT_FOUND:           "没找到metadata",
+	AUTHORIZATION_NOT_FOUND:      "没找到验证头",
+	ACCESSKEY_NOT_FOUND:          "没找到用户appid",
+	WRONG_CAPTCHA:                "验证码错误",
+	WECHAT_ERR_USERTOKEN_EXPIRED: "微信授权中用户的token已过期",
 
 	SERVER_WRONG: "服务器错误",
 
