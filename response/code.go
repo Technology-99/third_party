@@ -38,6 +38,10 @@ const (
 	ACCESSKEY_NOT_FOUND          int32 = 4007
 	WRONG_CAPTCHA                int32 = 4008
 	WECHAT_ERR_USERTOKEN_EXPIRED int32 = 4009
+	MOVIE_EXIST  = 4010
+	CHAPTER_EXIST  = 4011
+	EPISODE_EXIST  = 4012
+	SCENE_EXIST  = 4013
 
 	SERVER_WRONG int32 = 5000
 
@@ -76,6 +80,10 @@ var WrongMessageEn = map[int32]string{
 	ACCESSKEY_NOT_FOUND:          "accesskey not found",
 	WRONG_CAPTCHA:                "wrong captcha",
 	WECHAT_ERR_USERTOKEN_EXPIRED: "wechat user_token is expired",
+	MOVIE_EXIST: "movie already exists",
+	CHAPTER_EXIST: "chapter already exists",
+	EPISODE_EXIST: "episode already exists",
+	SCENE_EXIST: "scene already exists",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
@@ -111,6 +119,10 @@ var WrongMessageZh = map[int32]string{
 	GROUP_ALREADY_EXISTS:   "用户组已存在",
 	CANT_CREATE_GROUP:      "超级管理员不可创建组",
 	CANT_CREATE_ACCOUNT:    "无法创建子账号,请用根账号创建",
+	MOVIE_EXIST: "该标题的影剧已经存在",
+	CHAPTER_EXIST: "该影剧下此标题的章节已经存在",
+	EPISODE_EXIST: "该章节下此标题的剧集已经存在",
+	SCENE_EXIST: "该章节下此标题的场景已经存在",
 
 	NOT_FOUND: "记录未找到",
 
