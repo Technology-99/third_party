@@ -41,8 +41,8 @@ func (m *RestJwtAuthInterceptorMiddleware) Handle(next http.HandlerFunc) http.Ha
 			return
 		}
 		if pubKey == "" || len(pubKey) <= 0 {
-			logx.Errorf("key is empty")
-			CommonErrResponse(w, r, response.ACCESSKEY_NOT_FOUND)
+			logx.Infof("pubKey is empty，accessToken is expired")
+			CommonErrResponse(w, r, response.ACCESS_EXPIRED)
 			return
 		}
 		claims, err := jwts.JwtWithoutDomainParseToken(token, pubKey)
