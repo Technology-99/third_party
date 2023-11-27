@@ -40,10 +40,15 @@ func (m *RestJwtAuthInterceptorMiddleware) Handle(next http.HandlerFunc) http.Ha
 			CommonErrResponse(w, r, response.ACCESSKEY_NOT_FOUND)
 			return
 		}
+		if pubKey == "" || len(pubKey) <= 0 {
+			logx.Errorf("key is empty")
+			CommonErrResponse(w, r, response.ACCESSKEY_NOT_FOUND)
+			return
+		}
 		claims, err := jwts.JwtWithoutDomainParseToken(token, pubKey)
 		if err != nil {
 			logx.Errorf("ParseToken error: %v", err)
-			CommonErrResponse(w, r, response.AUTHORIZATION_NOT_FOUND)
+			CommonErrResponse(w, r, response.ACCESS_EXPIRED)
 			return
 		}
 		ctx := context.WithValue(r.Context(), "UserId", claims.UserId)

@@ -27,6 +27,7 @@ const (
 	DELETE_ADMIN_WRONG     int32 = 2010
 	CANT_CREATE_GROUP      int32 = 2011
 	CANT_CREATE_ACCOUNT    int32 = 2012
+	REFRESH_EXPIRED = 2013
 
 	NOT_FOUND int32 = 3001
 
@@ -60,6 +61,7 @@ var WrongMessageEn = map[int32]string{
 
 	ACCESS_TOKEN_INVALID:   "invalid token",
 	ACCESS_EXPIRED:         "user licence expired",
+	REFRESH_EXPIRED:         "refresh licence expired",
 	ACCESS_DENY:            "permission denied",
 	ACCESS_NOT_FOUND:       "account does not exist",
 	ACCESS_PWD_WRONG:       "incorrect username or password",
@@ -108,6 +110,7 @@ var WrongMessageZh = map[int32]string{
 
 	ACCESS_TOKEN_INVALID:   "无效token",
 	ACCESS_EXPIRED:         "用户凭证过期",
+	REFRESH_EXPIRED:         "刷新凭证过期",
 	ACCESS_DENY:            "权限验证失败",
 	ACCESS_NOT_FOUND:       "账户不存在",
 	ACCESS_PWD_WRONG:       "用户名或密码不正确",
