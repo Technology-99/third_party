@@ -89,7 +89,7 @@ func (conf AliyunConf) GetPolicyToken() (*PolicyToken, error) {
 		var callbackParam CallbackParam
 		callbackParam.CallbackUrl = conf.CallbackUrl
 		callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&requestID=" + conf.RequestID
-		callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
+		callbackParam.CallbackBodyType = "application/json"
 		callback_str, err := json.Marshal(callbackParam)
 		if err != nil {
 			return nil, err
