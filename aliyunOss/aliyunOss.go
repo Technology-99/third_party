@@ -34,6 +34,7 @@ type AliyunConf struct {
 	Key             string `json:"key"`
 	CallbackUrl     string `json:"callback_url"`
 	ExpireTime      int64  `json:"expire_time"`
+	RequestID       string `json:"request_id"`
 }
 
 type ConfigStruct struct {
@@ -87,7 +88,7 @@ func (conf AliyunConf) GetPolicyToken() (*PolicyToken, error) {
 	if conf.IsCallback {
 		var callbackParam CallbackParam
 		callbackParam.CallbackUrl = conf.CallbackUrl
-		callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
+		callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&requestID=" + conf.RequestID
 		callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 		callback_str, err := json.Marshal(callbackParam)
 		if err != nil {
