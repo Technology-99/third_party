@@ -88,8 +88,9 @@ func (conf AliyunConf) GetPolicyToken() (*PolicyToken, error) {
 	if conf.IsCallback {
 		var callbackParam CallbackParam
 		callbackParam.CallbackUrl = conf.CallbackUrl
-		//callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&requestID=" + conf.RequestID
-		callbackParam.CallbackBody = fmt.Sprintf("{\"filename\":\"${object}\",\"size\":${size},\"mimeType\":\"{mimeType}\",\"height\":${imageInfo.height},\"width\":=${imageInfo.width},\"requestId\":\"%s\"}", conf.RequestID)
+		callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
+		//&requestID= + conf.RequestID
+		//callbackParam.CallbackBody = fmt.Sprintf("{\"filename\":\"${object}\",\"size\":${size},\"mimeType\":\"{mimeType}\",\"height\":${imageInfo.height},\"width\":=${imageInfo.width},\"requestId\":\"%s\"}", conf.RequestID)
 		callbackParam.CallbackBodyType = "application/json"
 		callback_str, err := json.Marshal(callbackParam)
 		if err != nil {
