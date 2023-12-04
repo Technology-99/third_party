@@ -12,22 +12,22 @@ package response
 import "errors"
 
 const (
-	SUCCESS int32 = 1000
-	ACCESS_TOKEN_INVALID   int32 = 2000
-	ACCESS_EXPIRED         int32 = 2001
-	ACCESS_DENY            int32 = 2002
-	ACCESS_NOT_FOUND       int32 = 2003
-	ACCESS_PWD_WRONG       int32 = 2004
-	ACCESS_KEY_INVALID     int32 = 2005
-	ACCOUNT_ALREADY_EXISTS int32 = 2006
-	ACCESS_CODE_WRONG      int32 = 2007
-	GROUP_ALREADY_EXISTS   int32 = 2008
-	ACCESS_TOO_FAST        int32 = 2009
-	DELETE_ADMIN_WRONG     int32 = 2010
-	CANT_CREATE_GROUP      int32 = 2011
-	CANT_CREATE_ACCOUNT    int32 = 2012
-	REFRESH_EXPIRED int32 = 2013
-	NOT_FOUND int32 = 3001
+	SUCCESS                      int32 = 1000
+	ACCESS_TOKEN_INVALID         int32 = 2000
+	ACCESS_EXPIRED               int32 = 2001
+	ACCESS_DENY                  int32 = 2002
+	ACCESS_NOT_FOUND             int32 = 2003
+	ACCESS_PWD_WRONG             int32 = 2004
+	ACCESS_KEY_INVALID           int32 = 2005
+	ACCOUNT_ALREADY_EXISTS       int32 = 2006
+	ACCESS_CODE_WRONG            int32 = 2007
+	GROUP_ALREADY_EXISTS         int32 = 2008
+	ACCESS_TOO_FAST              int32 = 2009
+	DELETE_ADMIN_WRONG           int32 = 2010
+	CANT_CREATE_GROUP            int32 = 2011
+	CANT_CREATE_ACCOUNT          int32 = 2012
+	REFRESH_EXPIRED              int32 = 2013
+	NOT_FOUND                    int32 = 3001
 	FAIL                         int32 = 4000
 	WRONG_PARAM                  int32 = 4001
 	NOT_FOUND_METHOD             int32 = 4004
@@ -36,17 +36,18 @@ const (
 	ACCESSKEY_NOT_FOUND          int32 = 4007
 	WRONG_CAPTCHA                int32 = 4008
 	WECHAT_ERR_USERTOKEN_EXPIRED int32 = 4009
-	MOVIE_EXIST int32  = 4010
-	CHAPTER_EXIST int32  = 4011
-	EPISODE_EXIST int32 = 4012
-	SCENE_EXIST  int32 = 4013
-	SERVER_WRONG int32 = 5000
-	OPERATE_ARTICLE_STATUS_ERR int32 = 6000
-	OPERATE_LABEL_STATUS_ERR   int32 = 6001
+	MOVIE_EXIST                  int32 = 4010
+	CHAPTER_EXIST                int32 = 4011
+	EPISODE_EXIST                int32 = 4012
+	SCENE_EXIST                  int32 = 4013
+	DATA_EXIST                   int32 = 4014
+	SERVER_WRONG                 int32 = 5000
+	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
+	OPERATE_LABEL_STATUS_ERR     int32 = 6001
 	// note: sdk error code %5d
-	ERR_INIT_SDK_NOT_CLIENT int32  = 10001
-	ERR_LOGININFO_NIL    int32    = 10002
-	ERR_JSON_MARSHAL     int32    = 10003
+	ERR_INIT_SDK_NOT_CLIENT  int32 = 10001
+	ERR_LOGININFO_NIL        int32 = 10002
+	ERR_JSON_MARSHAL         int32 = 10003
 	ERR_INIT_SDK_NOT_LOGINED int32 = 10004
 )
 
@@ -55,7 +56,7 @@ var WrongMessageEn = map[int32]string{
 
 	ACCESS_TOKEN_INVALID:   "invalid token",
 	ACCESS_EXPIRED:         "user licence expired",
-	REFRESH_EXPIRED:         "refresh licence expired",
+	REFRESH_EXPIRED:        "refresh licence expired",
 	ACCESS_DENY:            "permission denied",
 	ACCESS_NOT_FOUND:       "account does not exist",
 	ACCESS_PWD_WRONG:       "incorrect username or password",
@@ -76,10 +77,11 @@ var WrongMessageEn = map[int32]string{
 	ACCESSKEY_NOT_FOUND:          "accesskey not found",
 	WRONG_CAPTCHA:                "wrong captcha",
 	WECHAT_ERR_USERTOKEN_EXPIRED: "wechat user_token is expired",
-	MOVIE_EXIST: "movie already exists",
-	CHAPTER_EXIST: "chapter already exists",
-	EPISODE_EXIST: "episode already exists",
-	SCENE_EXIST: "scene already exists",
+	MOVIE_EXIST:                  "movie already exists",
+	CHAPTER_EXIST:                "chapter already exists",
+	EPISODE_EXIST:                "episode already exists",
+	SCENE_EXIST:                  "scene already exists",
+	DATA_EXIST:                   "data already exists",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
@@ -104,7 +106,7 @@ var WrongMessageZh = map[int32]string{
 
 	ACCESS_TOKEN_INVALID:   "无效token",
 	ACCESS_EXPIRED:         "用户凭证过期",
-	REFRESH_EXPIRED:         "刷新凭证过期",
+	REFRESH_EXPIRED:        "刷新凭证过期",
 	ACCESS_DENY:            "权限验证失败",
 	ACCESS_NOT_FOUND:       "账户不存在",
 	ACCESS_PWD_WRONG:       "用户名或密码不正确",
@@ -116,10 +118,11 @@ var WrongMessageZh = map[int32]string{
 	GROUP_ALREADY_EXISTS:   "用户组已存在",
 	CANT_CREATE_GROUP:      "超级管理员不可创建组",
 	CANT_CREATE_ACCOUNT:    "无法创建子账号,请用根账号创建",
-	MOVIE_EXIST: "该标题的影剧已经存在",
-	CHAPTER_EXIST: "该影剧下此标题的章节已经存在",
-	EPISODE_EXIST: "该章节下此标题的剧集已经存在",
-	SCENE_EXIST: "该章节下此标题的场景已经存在",
+	MOVIE_EXIST:            "该标题的影剧已经存在",
+	CHAPTER_EXIST:          "该影剧下此标题的章节已经存在",
+	EPISODE_EXIST:          "该章节下此标题的剧集已经存在",
+	SCENE_EXIST:            "该章节下此标题的场景已经存在",
+	DATA_EXIST:             "该标题的数据已经存在",
 
 	NOT_FOUND: "记录未找到",
 
