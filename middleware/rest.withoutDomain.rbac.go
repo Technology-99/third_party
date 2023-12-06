@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/Technology-99/third_party/commKey"
+	"github.com/Technology-99/third_party/response"
 	"github.com/casbin/casbin/v2"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"net/http"
-	"third_party/commKey"
-	"third_party/response"
 )
 
 type RestRbacInterceptorMiddleware struct {

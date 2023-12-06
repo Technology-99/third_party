@@ -13,12 +13,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Technology-99/third_party/cache_key"
+	"github.com/Technology-99/third_party/commKey"
+	utils "github.com/Technology-99/third_party/cryptography"
 	"github.com/casbin/casbin/v2"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"net/http"
-	"third_party/cache_key"
-	"third_party/commKey"
-	utils "third_party/cryptography"
 )
 
 type JwtVerifyMiddleware struct {

@@ -3,14 +3,14 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"github.com/Technology-99/third_party/cache_key"
+	utils "github.com/Technology-99/third_party/cryptography"
+	"github.com/Technology-99/third_party/response"
+	"github.com/Technology-99/third_party/sony"
 	"github.com/zeromicro/go-zero/core/logc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"strings"
-	"third_party/cache_key"
-	utils "third_party/cryptography"
-	"third_party/response"
-	"third_party/sony"
 )
 
 // note: 基于grpc的中间件，实现jwt校验

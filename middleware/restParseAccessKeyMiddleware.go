@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"context"
+	"github.com/Technology-99/third_party/commKey"
 	"net/http"
-	"third_party/commKey"
 )
 
 type ParseAccessKeyMiddleware struct {

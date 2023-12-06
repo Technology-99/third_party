@@ -3,10 +3,10 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"github.com/Technology-99/third_party/response"
 	"github.com/zeromicro/go-zero/core/logc"
 	"google.golang.org/grpc"
 	"strings"
-	"third_party/response"
 )
 
 // note: 基于grpc的中间件，实现rbac鉴权认证

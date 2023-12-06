@@ -3,13 +3,13 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"github.com/Technology-99/third_party/cache_key"
+	"github.com/Technology-99/third_party/commKey"
+	"github.com/Technology-99/third_party/jwts"
+	"github.com/Technology-99/third_party/response"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"net/http"
-	"third_party/cache_key"
-	"third_party/commKey"
-	"third_party/jwts"
-	"third_party/response"
 )
 
 type RestJwtAuthInterceptorMiddleware struct {
