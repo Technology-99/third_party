@@ -14,7 +14,7 @@ type RedisConfig struct {
 // 声明一个全局的rdb变量
 
 // 初始化连接
-func NewRedisClient(c RedisConfig) (*redis.Client, error) {
+func NewRedisClient(c *RedisConfig) (*redis.Client, error) {
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     c.Addr,
