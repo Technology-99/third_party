@@ -6,9 +6,10 @@ import (
 )
 
 type RedisConfig struct {
-	Addr     string
-	Password string
-	DbName   int
+	Host string
+	Pass string `json:",optional"`
+	Tls  bool   `json:",optional"`
+	DB   int    `json:",default=0"`
 }
 
 // 声明一个全局的rdb变量
@@ -17,9 +18,9 @@ type RedisConfig struct {
 func NewRedisClient(c *RedisConfig) (*redis.Client, error) {
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     c.Addr,
-		Password: c.Password, // no password set
-		DB:       c.DbName,   // use default DB
+		Addr:     c.Host,
+		Password: c.Pass, // no password set
+		DB:       c.DB,   // use default DB
 	})
 	if err := rdb.Ping(context.Background()).Err(); err != nil {
 		return nil, err
