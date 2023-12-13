@@ -1,0 +1,16 @@
+name: releaser
+
+on:
+  workflow_dispatch:
+
+jobs:
+  releaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Releaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: latest
+          args: release --clean --release-notes=./Release.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GPR_TOKEN }}
