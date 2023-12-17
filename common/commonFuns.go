@@ -193,6 +193,17 @@ func Replace(table map[string]string, s string) string {
 	return s
 }
 
+func StringToBool(string2 string) bool {
+	//todo :string to bool
+	b, _ := strconv.ParseBool(string2)
+	return b
+}
+func BoolToString(bool2 bool) string {
+	//todo :bool to string
+	sBool := strconv.FormatBool(bool2) //方法1
+	return sBool
+}
+
 // Int2Str int类型转string类型
 func Int2Str(inter int) string {
 	string := strconv.Itoa(inter)
