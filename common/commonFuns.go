@@ -306,3 +306,34 @@ func ReturnSpecifyYear(year int) (time.Time, time.Time) {
 	lastOfMonth := firstOfMonth.AddDate(0, 12, 0)
 	return firstOfMonth, lastOfMonth
 }
+
+// note: 返回wechat编码
+
+type WeChatShareConfig struct {
+	AppId     string   `json:"AppId"`
+	Timestamp int64    `json:"Timestamp"`
+	NonceStr  string   `json:"NonceStr"`
+	Debug     bool     `json:"Debug"`
+	JsApiList []string `json:"JsApiList"`
+	Signature string   `json:"Signature"`
+}
+
+func GetWeChatShareConfig(debug bool, ticket, shareLink, appid string, JsApiList []string) WeChatShareConfig {
+	noncestr := RandStringRunes(16)
+	timestamp := time.Now().Unix()
+	tempUrl := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%d&url=%s",
+		ticket,
+		noncestr,
+		timestamp,
+		shareLink)
+	sha1URI := Sha1(tempUrl)
+	weChatShareConfig := WeChatShareConfig{
+		AppId:     appid,
+		Timestamp: timestamp,
+		NonceStr:  noncestr,
+		Debug:     debug,
+		JsApiList: JsApiList,
+		Signature: sha1URI,
+	}
+	return weChatShareConfig
+}
