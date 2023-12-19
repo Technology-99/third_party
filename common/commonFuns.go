@@ -243,6 +243,11 @@ func Str2Uint(inter string) uint {
 	return uint(uint64)
 }
 
+func Str2Uint32(inter string) uint32 {
+	uint64, _ := strconv.ParseUint(inter, 10, 64)
+	return uint32(uint64)
+}
+
 // Str2Int64 string类型转Int64类型
 func Str2Int64(inter string) int64 {
 	int64, _ := strconv.ParseInt(inter, 10, 64)
