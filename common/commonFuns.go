@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"google.golang.org/grpc/peer"
 	"io"
 	"io/ioutil"
@@ -341,4 +340,12 @@ func GetWeChatShareConfig(debug bool, ticket, shareLink, appid string, JsApiList
 		Signature: sha1URI,
 	}
 	return weChatShareConfig
+}
+
+// Slice2Str string类型转Int64类型
+func SliceInt2Str(inter []interface{}) string {
+	temp := fmt.Sprintf("%d", inter)
+	temp = temp[1 : len(temp)-1]
+	temp = strings.Replace(temp, " ", ",", -1)
+	return temp
 }
