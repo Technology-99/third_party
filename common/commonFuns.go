@@ -343,8 +343,8 @@ func GetWeChatShareConfig(debug bool, ticket, shareLink, appid string, JsApiList
 }
 
 // Slice2Str string类型转Int64类型
-func SliceInt2Str(inter []interface{}) string {
-	temp := fmt.Sprintf("%d", inter)
+func SliceInt2Str(inters interface{}) string {
+	temp := fmt.Sprintf("%d", inters)
 	temp = temp[1 : len(temp)-1]
 	temp = strings.Replace(temp, " ", ",", -1)
 	return temp
