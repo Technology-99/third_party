@@ -30,4 +30,5 @@ const (
 	WECHAT_USER_TOKEN = "%s:wechat-usertokenn-%s"
 
 	WECHAT_JSAPI_TICKET_KEY_CRON = "%s:jsApiTicket-TID%d-key-%s"
+	WECHAT_TICKET_APPID_CRON     = "%s:wx-ticket-%s"
 )
