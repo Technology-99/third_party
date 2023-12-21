@@ -41,6 +41,7 @@ const (
 	EPISODE_EXIST                int32 = 4012
 	SCENE_EXIST                  int32 = 4013
 	DATA_EXIST                   int32 = 4014
+	NOT_INVITED                  int32 = 4015
 	SERVER_WRONG                 int32 = 5000
 	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
 	OPERATE_LABEL_STATUS_ERR     int32 = 6001
@@ -82,6 +83,7 @@ var WrongMessageEn = map[int32]string{
 	EPISODE_EXIST:                "episode already exists",
 	SCENE_EXIST:                  "scene already exists",
 	DATA_EXIST:                   "data already exists",
+	NOT_INVITED:                  "not invited user",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
@@ -123,6 +125,7 @@ var WrongMessageZh = map[int32]string{
 	EPISODE_EXIST:          "该章节下此标题的剧集已经存在",
 	SCENE_EXIST:            "该章节下此标题的场景已经存在",
 	DATA_EXIST:             "该标题的数据已经存在",
+	NOT_INVITED:            "不是受邀用户",
 
 	NOT_FOUND: "记录未找到",
 
