@@ -24,6 +24,9 @@ const (
 
 	WECHAT_KEY_CRON = "%s:wechatCron-TID%d-key-%s"
 
+	// note: 服务名+公众号的Appid
+	WECHAT_APPID_CRON = "%s:wx-access-%s"
+
 	WECHAT_USER_TOKEN = "%s:wechat-usertokenn-%s"
 
 	WECHAT_JSAPI_TICKET_KEY_CRON = "%s:jsApiTicket-TID%d-key-%s"
