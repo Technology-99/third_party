@@ -7,3 +7,10 @@ type CommonResponse struct {
 	Path      string      `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
 	Data      interface{} `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 }
+
+type ListData struct {
+	List     interface{} `json:"list"`
+	Total    int64       `json:"total"`
+	Page     int         `json:"page"`
+	PageSize int         `json:"pageSize"`
+}
