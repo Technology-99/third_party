@@ -1,7 +1,6 @@
 package corsHandler
 
 import (
-	"github.com/zeromicro/go-zero/rest/internal/response"
 	"net/http"
 	"strings"
 )
@@ -39,39 +38,39 @@ func CustomMiddleware() func(w http.Header) {
 
 // NotAllowedHandler handles cross domain not allowed requests.
 // At most one origin can be specified, other origins are ignored if given, default to be *.
-func NotAllowedHandler(fn func(w http.ResponseWriter), origins ...string) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gw := response.NewHeaderOnceResponseWriter(w)
-		checkAndSetHeaders(gw, r, origins)
-		if fn != nil {
-			fn(gw)
-		}
-
-		if r.Method == http.MethodOptions {
-			gw.WriteHeader(http.StatusNoContent)
-		} else {
-			gw.WriteHeader(http.StatusNotFound)
-		}
-	})
-}
+//func NotAllowedHandler(fn func(w http.ResponseWriter), origins ...string) http.Handler {
+//	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//		gw := response.NewHeaderOnceResponseWriter(w)
+//		checkAndSetHeaders(gw, r, origins)
+//		if fn != nil {
+//			fn(gw)
+//		}
+//
+//		if r.Method == http.MethodOptions {
+//			gw.WriteHeader(http.StatusNoContent)
+//		} else {
+//			gw.WriteHeader(http.StatusNotFound)
+//		}
+//	})
+//}
 
 // Middleware returns a middleware that adds CORS headers to the response.
-func Middleware(fn func(w http.Header), origins ...string) func(http.HandlerFunc) http.HandlerFunc {
-	return func(next http.HandlerFunc) http.HandlerFunc {
-		return func(w http.ResponseWriter, r *http.Request) {
-			checkAndSetHeaders(w, r, origins)
-			if fn != nil {
-				fn(w.Header())
-			}
-
-			if r.Method == http.MethodOptions {
-				w.WriteHeader(http.StatusNoContent)
-			} else {
-				next(w, r)
-			}
-		}
-	}
-}
+//func Middleware(fn func(w http.Header), origins ...string) func(http.HandlerFunc) http.HandlerFunc {
+//	return func(next http.HandlerFunc) http.HandlerFunc {
+//		return func(w http.ResponseWriter, r *http.Request) {
+//			checkAndSetHeaders(w, r, origins)
+//			if fn != nil {
+//				fn(w.Header())
+//			}
+//
+//			if r.Method == http.MethodOptions {
+//				w.WriteHeader(http.StatusNoContent)
+//			} else {
+//				next(w, r)
+//			}
+//		}
+//	}
+//}
 
 func checkAndSetHeaders(w http.ResponseWriter, r *http.Request, origins []string) {
 	setVaryHeaders(w, r)
