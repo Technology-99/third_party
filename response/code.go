@@ -42,6 +42,7 @@ const (
 	SCENE_EXIST                  int32 = 4013
 	DATA_EXIST                   int32 = 4014
 	NOT_INVITED                  int32 = 4015
+	ACCESS_DENIED                int32 = 4016
 	SERVER_WRONG                 int32 = 5000
 	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
 	OPERATE_LABEL_STATUS_ERR     int32 = 6001
@@ -84,6 +85,7 @@ var WrongMessageEn = map[int32]string{
 	SCENE_EXIST:                  "scene already exists",
 	DATA_EXIST:                   "data already exists",
 	NOT_INVITED:                  "not invited user",
+	ACCESS_DENIED:                "access denied",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
 
@@ -126,6 +128,7 @@ var WrongMessageZh = map[int32]string{
 	SCENE_EXIST:            "该章节下此标题的场景已经存在",
 	DATA_EXIST:             "该标题的数据已经存在",
 	NOT_INVITED:            "不是受邀用户",
+	ACCESS_DENIED:          "访问的资源没有足够的权限",
 
 	NOT_FOUND: "记录未找到",
 
