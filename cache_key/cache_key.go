@@ -31,4 +31,12 @@ const (
 
 	WECHAT_JSAPI_TICKET_KEY_CRON = "%s:jsApiTicket-TID%d-key-%s"
 	WECHAT_TICKET_APPID_CRON     = "%s:wx-ticket-%s"
+
+	// note: 服务名+抖音的Appid
+	DOUYIN_APPID_CRON = "%s:dy-access-%s"
+
+	DOUYIN_USER_TOKEN = "%s:dy-usertokenn-%s"
+
+	DOUYIN_JSAPI_TICKET_KEY_CRON = "%s:jsApiTicket-TID%d-key-%s"
+	DOUYIN_TICKET_APPID_CRON     = "%s:dy-ticket-%s"
 )
