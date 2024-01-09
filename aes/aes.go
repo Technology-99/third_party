@@ -4,27 +4,14 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/base64"
 	"encoding/hex"
-	"fmt"
 )
 
 //AES	    分组长度(字节)	密钥长度(字节)	加密轮数
 //AES-128	16	            16	10
 //AES-192	16	            24	12
 //AES-256	16	            32	14
-
-func DeHex(text string) []byte {
-	decoded, err := hex.DecodeString(text)
-	if err != nil {
-		panic(err)
-	}
-	return decoded
-}
-
-func EnHex(text string) string {
-	enStr := hex.EncodeToString([]byte(text))
-	return enStr
-}
 
 // PKCS5填充方式
 func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
@@ -59,12 +46,12 @@ func ZeroUnPadding(origData []byte) []byte {
 }
 
 // 加密
-func AesEncrypt(encodeBytes []byte, key []byte, iv []byte) (string, error) {
+func AesEncrypt(encodeBytes []byte, key []byte, iv []byte) ([]byte, error) {
 	//encodeBytes := []byte(encodeStr)
 	//根据key 生成密文
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	blockSize := block.BlockSize()
@@ -75,9 +62,7 @@ func AesEncrypt(encodeBytes []byte, key []byte, iv []byte) (string, error) {
 	blockMode := cipher.NewCBCEncrypter(block, iv)
 	crypted := make([]byte, len(encodeBytes))
 	blockMode.CryptBlocks(crypted, encodeBytes)
-
-	hexstr := fmt.Sprintf("%x", crypted)
-	return hexstr, nil
+	return crypted, nil
 	//return base64.StdEncoding.EncodeToString(crypted), nil
 }
 
@@ -99,4 +84,29 @@ func AesDecrypt(decodeBytes []byte, key []byte, iv []byte) ([]byte, error) {
 	//origData = ZeroUnPadding(origData) // origData = PKCS5UnPadding(origData)
 	origData = PKCS5UnPadding(origData)
 	return origData, nil
+}
+
+func Byte2base64(bytes []byte) string {
+	return base64.StdEncoding.EncodeToString(bytes)
+}
+
+func Base642byte(str string) ([]byte, error) {
+	bytes, err := base64.StdEncoding.DecodeString(str)
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+
+func Hex2Byte(text string) ([]byte, error) {
+	bytes, err := hex.DecodeString(text)
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+
+func Bytes2Hex(bytes []byte) string {
+	str := hex.EncodeToString(bytes)
+	return str
 }
