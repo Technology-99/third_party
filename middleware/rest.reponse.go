@@ -24,5 +24,6 @@ func CommonErrResponse(w http.ResponseWriter, r *http.Request, Code int32, v ...
 	}
 	body, _ := json.Marshal(&resp)
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(body)
 }
