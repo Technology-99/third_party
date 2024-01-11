@@ -51,6 +51,8 @@ const (
 	ERR_LOGININFO_NIL        int32 = 10002
 	ERR_JSON_MARSHAL         int32 = 10003
 	ERR_INIT_SDK_NOT_LOGINED int32 = 10004
+	// note: dbl 游戏相关
+	ERR_SCENE_LOCK int32 = 600001
 )
 
 var WrongMessageEn = map[int32]string{
@@ -97,6 +99,8 @@ var WrongMessageEn = map[int32]string{
 	ERR_LOGININFO_NIL:          "reset time, logininfo is nil",
 	ERR_JSON_MARSHAL:           "json marshal err",
 	ERR_INIT_SDK_NOT_LOGINED:   "sdk client isn't logined",
+
+	ERR_SCENE_LOCK: "the scene not unlock",
 }
 
 type ApiResponse struct {
@@ -149,6 +153,8 @@ var WrongMessageZh = map[int32]string{
 	ERR_LOGININFO_NIL:          "重置过期时间时，返回的登录信息为空",
 	ERR_JSON_MARSHAL:           "json序列化错误",
 	ERR_INIT_SDK_NOT_LOGINED:   "sdk尚未登录",
+
+	ERR_SCENE_LOCK: "该场景尚未解锁，请通关相关剧情",
 }
 
 func StatusToErr(code int32, v ...any) error {
