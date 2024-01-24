@@ -42,8 +42,8 @@ const (
 	SCENE_EXIST                  int32 = 4013
 	DATA_EXIST                   int32 = 4014
 	NOT_INVITED                  int32 = 4015
-	NOT_ADMIN                    int32 = 4016
 	ACCESS_DENIED                int32 = 4016
+	NOT_ADMIN                    int32 = 4017
 	SERVER_WRONG                 int32 = 5000
 	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
 	OPERATE_LABEL_STATUS_ERR     int32 = 6001
