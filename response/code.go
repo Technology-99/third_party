@@ -42,6 +42,7 @@ const (
 	SCENE_EXIST                  int32 = 4013
 	DATA_EXIST                   int32 = 4014
 	NOT_INVITED                  int32 = 4015
+	NOT_ADMIN                    int32 = 4016
 	ACCESS_DENIED                int32 = 4016
 	SERVER_WRONG                 int32 = 5000
 	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
@@ -87,6 +88,7 @@ var WrongMessageEn = map[int32]string{
 	SCENE_EXIST:                  "scene already exists",
 	DATA_EXIST:                   "data already exists",
 	NOT_INVITED:                  "not invited user",
+	NOT_ADMIN:                    "not admin user",
 	ACCESS_DENIED:                "access denied",
 
 	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
@@ -115,7 +117,7 @@ var WrongMessageZh = map[int32]string{
 	ACCESS_TOKEN_INVALID:   "无效token",
 	ACCESS_EXPIRED:         "用户凭证过期",
 	REFRESH_EXPIRED:        "刷新凭证过期",
-	ACCESS_DENY:            "权限验证失败",
+	ACCESS_DENY:            "权限不足",
 	ACCESS_NOT_FOUND:       "账户不存在",
 	ACCESS_PWD_WRONG:       "用户名或密码不正确",
 	ACCESS_KEY_INVALID:     "AccessKey无效",
@@ -132,6 +134,7 @@ var WrongMessageZh = map[int32]string{
 	SCENE_EXIST:            "该章节下此标题的场景已经存在",
 	DATA_EXIST:             "该标题的数据已经存在",
 	NOT_INVITED:            "不是受邀用户",
+	NOT_ADMIN:              "不是管理员用户",
 	ACCESS_DENIED:          "访问的资源没有足够的权限",
 
 	NOT_FOUND: "记录未找到",
