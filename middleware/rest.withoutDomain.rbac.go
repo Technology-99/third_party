@@ -15,6 +15,11 @@ type RestRbacInterceptorMiddleware struct {
 	Rbac    *casbin.Enforcer
 }
 
+const (
+	RestRbacInterceptorMiddlewareObjectPath       = "path"
+	RestRbacInterceptorMiddlewareObjectRequestURI = "requestURI"
+)
+
 func NewRestRbacInterceptorMiddleware(name string, rdb *redis.Redis, rbac *casbin.Enforcer) *RestRbacInterceptorMiddleware {
 	return &RestRbacInterceptorMiddleware{
 		SvcName: name,
@@ -22,18 +27,30 @@ func NewRestRbacInterceptorMiddleware(name string, rdb *redis.Redis, rbac *casbi
 	}
 }
 
-func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
+func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc, typeStr string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//租户权限个人验证、子账号验证个人与域内组权限
 		// subect, object, action
 		subect := r.Context().Value("UserId").(uint)
 
 		// note: 从请求中获取object
-		logx.Infof("r.URL.Path", r.URL.Path)
-		logx.Infof("r.RequestURI", r.RequestURI)
-		logx.Infof("r.URL.RawPath", r.URL.RawPath)
+		//logx.Infof("r.URL.Path", r.URL.Path)
+		//logx.Infof("r.RequestURI", r.RequestURI)
+		//logx.Infof("r.URL.RawPath", r.URL.RawPath)
 
 		object := r.URL.Path
+
+		switch typeStr {
+		case RestRbacInterceptorMiddlewareObjectPath:
+			object = r.URL.Path
+			break
+		case RestRbacInterceptorMiddlewareObjectRequestURI:
+			object = r.RequestURI
+			break
+		default:
+			object = r.URL.Path
+		}
+
 		action := r.Method
 
 		ok, err := m.checkPermission(fmt.Sprintf(commKey.RBAC_SUB, subect), object, action)
