@@ -13,6 +13,7 @@ import (
 type RestRbacInterceptorMiddleware struct {
 	SvcName string
 	Rbac    *casbin.Enforcer
+	TypeStr string
 }
 
 const (
@@ -20,14 +21,15 @@ const (
 	RestRbacInterceptorMiddlewareObjectRequestURI = "requestURI"
 )
 
-func NewRestRbacInterceptorMiddleware(name string, rdb *redis.Redis, rbac *casbin.Enforcer) *RestRbacInterceptorMiddleware {
+func NewRestRbacInterceptorMiddleware(name string, rdb *redis.Redis, rbac *casbin.Enforcer, typeStr string) *RestRbacInterceptorMiddleware {
 	return &RestRbacInterceptorMiddleware{
 		SvcName: name,
 		Rbac:    rbac,
+		TypeStr: typeStr,
 	}
 }
 
-func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc, typeStr string) http.HandlerFunc {
+func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//租户权限个人验证、子账号验证个人与域内组权限
 		// subect, object, action
@@ -40,7 +42,7 @@ func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc, typeStr st
 
 		object := r.URL.Path
 
-		switch typeStr {
+		switch m.TypeStr {
 		case RestRbacInterceptorMiddlewareObjectPath:
 			object = r.URL.Path
 			break
