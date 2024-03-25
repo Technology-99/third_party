@@ -53,7 +53,9 @@ const (
 	ERR_JSON_MARSHAL         int32 = 10003
 	ERR_INIT_SDK_NOT_LOGINED int32 = 10004
 	// note: dbl 游戏相关
-	ERR_SCENE_LOCK int32 = 600001
+	ERR_SCENE_LOCK   int32 = 600001
+	USER_HAS_PAYMENT int32 = 600002
+	USER_NO_PAYMENT  int32 = 600003
 )
 
 var WrongMessageEn = map[int32]string{
