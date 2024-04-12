@@ -109,6 +109,11 @@ var WrongMessageEn = map[int32]string{
 	ERR_INIT_SDK_NOT_LOGINED:   "sdk client isn't logined",
 
 	ERR_SCENE_LOCK: "the scene not unlock",
+
+	USER_PAYMENT_SUCCESS:    "payment success",
+	USER_PAYMENT_TIMEOUT:    "payment timeout",
+	USER_PAYMENT_PROCESSING: "payment processing",
+	USER_PAYMENT_FAIL:       "payment fail",
 }
 
 type ApiResponse struct {
@@ -164,6 +169,11 @@ var WrongMessageZh = map[int32]string{
 	ERR_INIT_SDK_NOT_LOGINED:   "sdk尚未登录",
 
 	ERR_SCENE_LOCK: "该场景尚未解锁，请通关相关剧情",
+
+	USER_PAYMENT_SUCCESS:    "支付成功",
+	USER_PAYMENT_TIMEOUT:    "支付超时",
+	USER_PAYMENT_PROCESSING: "支付处理中",
+	USER_PAYMENT_FAIL:       "支付失败",
 }
 
 func StatusToErr(code int32, v ...any) error {
