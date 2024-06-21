@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -32,6 +33,50 @@ func ClientGet(url string) func() ([]byte, error) {
 		res, err = httpClient.Get(url)
 
 		if err != nil {
+			return
+		}
+
+		defer res.Body.Close()
+		body, err = ioutil.ReadAll(res.Body)
+		return
+	}()
+	return func() ([]byte, error) {
+		_, ok := <-c
+		if !ok {
+			//fmt.Println("channel closed!")
+			return body, err
+		}
+		return body, err
+	}
+}
+
+func ClientPostWithHeaders(url string, sendBody interface{}, headers map[string]string) func() ([]byte, error) {
+	var body []byte
+	var err error
+
+	c := make(chan struct{}, 1)
+	go func() {
+		defer close(c)
+
+		sendBodyBt, err := json.Marshal(sendBody)
+		if err != nil {
+			return
+		}
+
+		req, err := http.NewRequest("POST", url, bytes.NewBuffer(sendBodyBt))
+		if err != nil {
+			fmt.Println("Error creating request:", err)
+			return
+		}
+		req.Header.Set("Content-Type", "application/json")
+		for key, val := range headers {
+			req.Header.Set(key, val)
+		}
+
+		var res *http.Response
+		res, err = httpClient.Do(req)
+		if err != nil {
+			fmt.Println("Error sending request:", err)
 			return
 		}
 
