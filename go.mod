@@ -25,6 +25,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/billcobbler/casbin-redis-watcher/v2 v2.0.0-20211014141847-d29c8619193d // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
@@ -34,6 +35,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
+	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/glebarez/go-sqlite v1.20.3 // indirect
 	github.com/glebarez/sqlite v1.7.0 // indirect

@@ -27,3 +27,11 @@ func NewMiddlewareContext(in Config) *MiddleContext {
 		Rbac:    in.Rbac,
 	}
 }
+
+func EasyNewMiddlewareContext(SvcName string, Redis *redis.Redis, Rbac *casbin.Enforcer) *MiddleContext {
+	return &MiddleContext{
+		SvcName: SvcName,
+		Redis:   Redis,
+		Rbac:    Rbac,
+	}
+}
