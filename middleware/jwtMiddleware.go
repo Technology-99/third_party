@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Technology-99/third_party/cache_key"
+	"github.com/Technology-99/third_party/consts"
 	utils "github.com/Technology-99/third_party/cryptography"
 	"github.com/Technology-99/third_party/response"
 	"github.com/Technology-99/third_party/sony"
@@ -69,7 +70,7 @@ func (SvcCtx *MiddleContext) JwtUnaryInterceptor(ctx context.Context, req interf
 		return result, nil
 	}
 
-	key := fmt.Sprintf(cache_key.ACCESS_TOKEN_KEY, "shield.rpc", AccessKey[0])
+	key := fmt.Sprintf(cache_key.ACCESS_TOKEN_KEY, consts.SHIELD_RPC_SERVICE_NAME, AccessKey[0])
 
 	AccessPublicKey, err := SvcCtx.Redis.Get(key)
 	if err != nil {
