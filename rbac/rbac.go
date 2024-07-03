@@ -16,20 +16,67 @@ const (
 )
 
 type CasbinEngine struct {
+	Prefix           string
+	TableName        string
 	RbacPath         string `json:"rbacPath"`
 	RbacChannel      string `json:"rbacChannel"`
 	IsCustomCallback bool
 	UpdateCallback   func(*casbin.Enforcer, string)
 	IsFiltered       bool
 	Filter           []gormadapter.Filter
-	Redis            redis.RedisKeyConf
+	Redis            *redis.RedisKeyConf
 	Db               *gorm.DB
 	Enforcer         *casbin.Enforcer
 	Watcher          persist.Watcher
 }
 
-func NewCasbinEngine(params CasbinEngine, v ...any) *CasbinEngine {
-	enforcer, err := InitRbac(params.RbacPath, params.Db, v)
+func EasyNewCasbinEngine(RbacPath, RbacChannel string, redis *redis.RedisKeyConf, db *gorm.DB, v ...any) *CasbinEngine {
+	if RbacPath == "" {
+		panic("CasbinEngine RbacPath is nil")
+	}
+	if RbacChannel == "" {
+		panic("CasbinEngine RbacChannel is nil")
+	}
+	if redis == nil {
+		panic("CasbinEngine redis is nil")
+	}
+	if db == nil {
+		panic("CasbinEngine db is nil")
+	}
+
+	prefix := ""
+	tableName := ""
+	if len(v) == 0 {
+		prefix = ""
+		tableName = defaultTableName
+	} else if len(v) == 1 {
+		prefix = v[0].(string)
+		tableName = defaultTableName
+	} else if len(v) == 2 {
+		prefix = v[0].(string)
+		tableName = v[1].(string)
+	} else {
+		panic(errors.New("wrong parameters"))
+	}
+
+	enforcer, err := InitRbac(RbacPath, db, prefix, tableName)
+	if err != nil {
+		panic(err)
+	}
+	return &CasbinEngine{
+		RbacPath:    RbacPath,
+		RbacChannel: RbacChannel,
+		Redis:       redis,
+		Db:          db,
+		Enforcer:    enforcer,
+	}
+}
+
+func NewCasbinEngine(params *CasbinEngine) *CasbinEngine {
+	if params == nil {
+		panic("CasbinEngine params is nil")
+	}
+	enforcer, err := InitRbac(params.RbacPath, params.Db, params.Prefix, params.TableName)
 	if err != nil {
 		panic(err)
 	}
@@ -46,20 +93,12 @@ func NewCasbinEngine(params CasbinEngine, v ...any) *CasbinEngine {
 	}
 }
 
-func InitRbac(RbacPath string, Db *gorm.DB, v ...any) (*casbin.Enforcer, error) {
-	prefix := ""
-	tableName := ""
-	if len(v) == 0 {
-		prefix = ""
+func InitRbac(RbacPath string, Db *gorm.DB, prefix, tableName string) (*casbin.Enforcer, error) {
+	if prefix == "" {
+		prefix = defaultDatabaseName
+	}
+	if tableName == "" {
 		tableName = defaultTableName
-	} else if len(v) == 1 {
-		prefix = v[0].(string)
-		tableName = defaultTableName
-	} else if len(v) == 2 {
-		prefix = v[0].(string)
-		tableName = v[1].(string)
-	} else {
-		return nil, errors.New("wrong parameters")
 	}
 	adapter, err := gormadapter.NewAdapterByDBUseTableName(Db, prefix, tableName)
 	if err != nil {
