@@ -1,6 +1,15 @@
 package third_party
 
+import "embed"
+
+//go:embed "version"
+var VersionF embed.FS
+
 func GetVersion() string {
 	// note: 读取包中的version文件，并返回
-	return "v0.0.38"
+	versionFile, err := VersionF.ReadFile("version")
+	if err != nil {
+		panic(err)
+	}
+	return string(versionFile)
 }
