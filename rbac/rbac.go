@@ -4,6 +4,7 @@ import (
 	"errors"
 	rediswatcher "github.com/billcobbler/casbin-redis-watcher/v2"
 	"github.com/casbin/casbin/v2"
+	"github.com/casbin/casbin/v2/persist"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"gorm.io/gorm"
@@ -14,77 +15,38 @@ const (
 	defaultTableName    = "casbin_rule"
 )
 
-type Config struct {
+type CasbinEngine struct {
 	RbacPath         string `json:"rbacPath"`
 	RbacChannel      string `json:"rbacChannel"`
 	IsCustomCallback bool
-	UpdateCallback   func(string)
+	UpdateCallback   func(*casbin.Enforcer, string)
 	IsFiltered       bool
 	Filter           []gormadapter.Filter
 	Redis            redis.RedisKeyConf
 	Db               *gorm.DB
+	Enforcer         *casbin.Enforcer
+	Watcher          persist.Watcher
 }
 
-func CustomInitRbacAndPolicy(RbacPath, RbacChannel string, db *gorm.DB, redis redis.RedisKeyConf, callback func(string2 string), filter []gormadapter.Filter) *casbin.Enforcer {
-	return InitRbacAndPolicy(&Config{
-		RbacPath:         RbacPath,
-		RbacChannel:      RbacChannel,
-		Redis:            redis,
-		Db:               db,
-		IsFiltered:       true,
-		IsCustomCallback: true,
-		UpdateCallback:   callback,
-		Filter:           filter,
-	})
-}
-
-func EasyInitRbacAndPolicy(RbacPath, RbacChannel string, db *gorm.DB, redis redis.RedisKeyConf) *casbin.Enforcer {
-	return InitRbacAndPolicy(&Config{
-		RbacPath:         RbacPath,
-		RbacChannel:      RbacChannel,
-		Redis:            redis,
-		Db:               db,
-		IsFiltered:       false,
-		IsCustomCallback: false,
-	})
-}
-
-func InitRbacAndPolicy(c *Config) *casbin.Enforcer {
-	var err error
-	rbacEnforcer, err := InitRbac(c.RbacPath, c.Db)
-	watcher, err := rediswatcher.NewWatcher(c.Redis.Host, rediswatcher.Password(c.Redis.Pass), rediswatcher.Channel(c.RbacChannel))
+func NewCasbinEngine(params CasbinEngine, v ...any) *CasbinEngine {
+	enforcer, err := InitRbac(params.RbacPath, params.Db, v)
 	if err != nil {
 		panic(err)
 	}
-	err = rbacEnforcer.SetWatcher(watcher)
-	if err != nil {
-		panic(err)
+	return &CasbinEngine{
+		RbacPath:         params.RbacPath,
+		RbacChannel:      params.RbacChannel,
+		IsCustomCallback: params.IsCustomCallback,
+		UpdateCallback:   params.UpdateCallback,
+		IsFiltered:       params.IsFiltered,
+		Filter:           params.Filter,
+		Redis:            params.Redis,
+		Db:               params.Db,
+		Enforcer:         enforcer,
 	}
-	if c.IsCustomCallback {
-		err = watcher.SetUpdateCallback(c.UpdateCallback)
-		if err != nil {
-			panic(err)
-		}
-	}
-	err = rbacEnforcer.SavePolicy()
-	if err != nil {
-		panic(err)
-	}
-	if c.IsFiltered {
-		err = rbacEnforcer.LoadFilteredPolicy(c.Filter)
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		err = rbacEnforcer.LoadPolicy()
-		if err != nil {
-			panic(err)
-		}
-	}
-	return rbacEnforcer
 }
 
-func InitRbac(path string, db *gorm.DB, v ...any) (*casbin.Enforcer, error) {
+func InitRbac(RbacPath string, Db *gorm.DB, v ...any) (*casbin.Enforcer, error) {
 	prefix := ""
 	tableName := ""
 	if len(v) == 0 {
@@ -99,11 +61,11 @@ func InitRbac(path string, db *gorm.DB, v ...any) (*casbin.Enforcer, error) {
 	} else {
 		return nil, errors.New("wrong parameters")
 	}
-	adapter, err := gormadapter.NewAdapterByDBUseTableName(db, prefix, tableName)
+	adapter, err := gormadapter.NewAdapterByDBUseTableName(Db, prefix, tableName)
 	if err != nil {
 		return nil, err
 	}
-	e, err := casbin.NewEnforcer(path, adapter)
+	e, err := casbin.NewEnforcer(RbacPath, adapter)
 	if err != nil {
 		return nil, err
 	}
@@ -111,5 +73,60 @@ func InitRbac(path string, db *gorm.DB, v ...any) (*casbin.Enforcer, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return e, nil
+}
+
+func (engine *CasbinEngine) EasyNewWatcher() *CasbinEngine {
+	// note: 如果是定制的过滤器模式下，不判断是否是过滤模式，也不判断是否是定制回调模式
+	engine.IsCustomCallback = false
+	engine.IsFiltered = false
+	return engine.NewWatcher()
+}
+
+func (engine *CasbinEngine) CustomFilterNewWatcher(filters []gormadapter.Filter) *CasbinEngine {
+	// note: 如果是定制的过滤器模式下，不判断是否是过滤模式，也不判断是否是定制回调模式
+	engine.IsCustomCallback = true
+	engine.IsFiltered = true
+	engine.Filter = filters
+	engine.UpdateCallback = func(enforcer *casbin.Enforcer, msg string) {
+		_ = enforcer.LoadFilteredPolicy(filters)
+	}
+	return engine.NewWatcher()
+}
+
+func (engine *CasbinEngine) NewWatcher() *CasbinEngine {
+	watcher, err := rediswatcher.NewWatcher(engine.Redis.Host, rediswatcher.Password(engine.Redis.Pass), rediswatcher.Channel(engine.RbacChannel))
+	if err != nil {
+		panic(err)
+	}
+	err = engine.Enforcer.SetWatcher(watcher)
+	if err != nil {
+		panic(err)
+	}
+	err = engine.Enforcer.SavePolicy()
+	if err != nil {
+		panic(err)
+	}
+	if engine.IsCustomCallback {
+		err = watcher.SetUpdateCallback(func(msg string) {
+			engine.UpdateCallback(engine.Enforcer, msg)
+		})
+		if err != nil {
+			panic(err)
+		}
+	}
+	if engine.IsFiltered {
+		err = engine.Enforcer.LoadFilteredPolicy(engine.Filter)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		err = engine.Enforcer.LoadPolicy()
+		if err != nil {
+			panic(err)
+		}
+	}
+	engine.Watcher = watcher
+	return engine
 }
