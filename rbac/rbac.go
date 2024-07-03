@@ -95,7 +95,7 @@ func NewCasbinEngine(params *CasbinEngine) *CasbinEngine {
 
 func InitRbac(RbacPath string, Db *gorm.DB, prefix, tableName string) (*casbin.Enforcer, error) {
 	if prefix == "" {
-		prefix = defaultDatabaseName
+		prefix = ""
 	}
 	if tableName == "" {
 		tableName = defaultTableName
