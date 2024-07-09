@@ -60,6 +60,8 @@ const (
 	USER_PAYMENT_TIMEOUT    int32 = 600005
 	USER_PAYMENT_PROCESSING int32 = 600006
 	USER_PAYMENT_FAIL       int32 = 600007
+	// note: 交易中心相关的错误码
+	TRANSACTION_ERR_RESOURCES_OCCUPIED int32 = 700001
 )
 
 var WrongMessageEn = map[int32]string{
@@ -110,10 +112,11 @@ var WrongMessageEn = map[int32]string{
 
 	ERR_SCENE_LOCK: "the scene not unlock",
 
-	USER_PAYMENT_SUCCESS:    "payment success",
-	USER_PAYMENT_TIMEOUT:    "payment timeout",
-	USER_PAYMENT_PROCESSING: "payment processing",
-	USER_PAYMENT_FAIL:       "payment fail",
+	USER_PAYMENT_SUCCESS:               "payment success",
+	USER_PAYMENT_TIMEOUT:               "payment timeout",
+	USER_PAYMENT_PROCESSING:            "payment processing",
+	USER_PAYMENT_FAIL:                  "payment fail",
+	TRANSACTION_ERR_RESOURCES_OCCUPIED: "transaction resources occupied",
 }
 
 type ApiResponse struct {
@@ -174,6 +177,9 @@ var WrongMessageZh = map[int32]string{
 	USER_PAYMENT_TIMEOUT:    "支付超时",
 	USER_PAYMENT_PROCESSING: "支付处理中",
 	USER_PAYMENT_FAIL:       "支付失败",
+
+	// 交易中心相关错误码
+	TRANSACTION_ERR_RESOURCES_OCCUPIED: "该资源被其他资源占用",
 }
 
 func StatusToErr(code int32, v ...any) error {
