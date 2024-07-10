@@ -100,7 +100,7 @@ func (SvcCtx *MiddleContext) JwtUnaryInterceptor(ctx context.Context, req interf
 	}
 
 	logc.Infof(ctx, "打印解码出来的内容: %v+", claims)
-
+	ctx = context.WithValue(ctx, "AccessKey", AccessKey)
 	ctx = context.WithValue(ctx, "UserId", claims.UserId)
 	ctx = context.WithValue(ctx, "TenantID", claims.TenantID)
 
