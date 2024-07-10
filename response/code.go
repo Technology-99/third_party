@@ -53,65 +53,57 @@ const (
 	ERR_JSON_MARSHAL         int32 = 10003
 	ERR_INIT_SDK_NOT_LOGINED int32 = 10004
 	// note: dbl 游戏相关
-	ERR_SCENE_LOCK          int32 = 600001
-	USER_HAS_PAYMENT        int32 = 600002
-	USER_NO_PAYMENT         int32 = 600003
-	USER_PAYMENT_SUCCESS    int32 = 600004
-	USER_PAYMENT_TIMEOUT    int32 = 600005
-	USER_PAYMENT_PROCESSING int32 = 600006
-	USER_PAYMENT_FAIL       int32 = 600007
-	// note: 交易中心相关的错误码
+	ERR_SCENE_LOCK                     int32 = 600001
+	USER_HAS_PAYMENT                   int32 = 600002
+	USER_NO_PAYMENT                    int32 = 600003
+	USER_PAYMENT_SUCCESS               int32 = 600004
+	USER_PAYMENT_TIMEOUT               int32 = 600005
+	USER_PAYMENT_PROCESSING            int32 = 600006
+	USER_PAYMENT_FAIL                  int32 = 600007
 	TRANSACTION_ERR_RESOURCES_OCCUPIED int32 = 700001
 )
 
 var WrongMessageEn = map[int32]string{
-	SUCCESS: "success",
-
-	ACCESS_TOKEN_INVALID:   "invalid token",
-	ACCESS_EXPIRED:         "user licence expired",
-	REFRESH_EXPIRED:        "refresh licence expired",
-	ACCESS_DENY:            "permission denied",
-	ACCESS_NOT_FOUND:       "account does not exist",
-	ACCESS_PWD_WRONG:       "incorrect username or password",
-	ACCESS_KEY_INVALID:     "AccessKey is invalid",
-	ACCOUNT_ALREADY_EXISTS: "user already exists",
-	ACCESS_CODE_WRONG:      "verification code error",
-	ACCESS_TOO_FAST:        "Access too fast",
-	GROUP_ALREADY_EXISTS:   "user group already exists",
-	CANT_CREATE_GROUP:      "Super administrator cannot create groups",
-	CANT_CREATE_ACCOUNT:    "unable to create sub-account, please use root account to create one",
-
-	NOT_FOUND:                    "record not found",
-	FAIL:                         "fail",
-	NOT_FOUND_METHOD:             "request method not found",
-	WRONG_PARAM:                  "param error",
-	METADATA_NOT_FOUND:           "metadata not found",
-	AUTHORIZATION_NOT_FOUND:      "authorization not found",
-	ACCESSKEY_NOT_FOUND:          "accesskey not found",
-	WRONG_CAPTCHA:                "wrong captcha",
-	WECHAT_ERR_USERTOKEN_EXPIRED: "wechat user_token is expired",
-	MOVIE_EXIST:                  "movie already exists",
-	CHAPTER_EXIST:                "chapter already exists",
-	EPISODE_EXIST:                "episode already exists",
-	SCENE_EXIST:                  "scene already exists",
-	DATA_EXIST:                   "data already exists",
-	NOT_INVITED:                  "not invited user",
-	NOT_ADMIN:                    "not admin user",
-	ACCESS_DENIED:                "access denied",
-
-	DELETE_ADMIN_WRONG: "super administrator cannot be deleted",
-
-	SERVER_WRONG: "Internal Server Error",
-
-	OPERATE_ARTICLE_STATUS_ERR: "The article is on the shelf and cannot be operated",
-	OPERATE_LABEL_STATUS_ERR:   "Tab is open and not operable",
-	ERR_INIT_SDK_NOT_CLIENT:    "sdk client is nil",
-	ERR_LOGININFO_NIL:          "reset time, logininfo is nil",
-	ERR_JSON_MARSHAL:           "json marshal err",
-	ERR_INIT_SDK_NOT_LOGINED:   "sdk client isn't logined",
-
-	ERR_SCENE_LOCK: "the scene not unlock",
-
+	SUCCESS:                            "success",
+	ACCESS_TOKEN_INVALID:               "invalid token",
+	ACCESS_EXPIRED:                     "user licence expired",
+	REFRESH_EXPIRED:                    "refresh licence expired",
+	ACCESS_DENY:                        "permission denied",
+	ACCESS_NOT_FOUND:                   "account does not exist",
+	ACCESS_PWD_WRONG:                   "incorrect username or password",
+	ACCESS_KEY_INVALID:                 "AccessKey is invalid",
+	ACCOUNT_ALREADY_EXISTS:             "user already exists",
+	ACCESS_CODE_WRONG:                  "verification code error",
+	ACCESS_TOO_FAST:                    "Access too fast",
+	GROUP_ALREADY_EXISTS:               "user group already exists",
+	CANT_CREATE_GROUP:                  "Super administrator cannot create groups",
+	CANT_CREATE_ACCOUNT:                "unable to create sub-account, please use root account to create one",
+	NOT_FOUND:                          "record not found",
+	FAIL:                               "fail",
+	NOT_FOUND_METHOD:                   "request method not found",
+	WRONG_PARAM:                        "param error",
+	METADATA_NOT_FOUND:                 "metadata not found",
+	AUTHORIZATION_NOT_FOUND:            "authorization not found",
+	ACCESSKEY_NOT_FOUND:                "accesskey not found",
+	WRONG_CAPTCHA:                      "wrong captcha",
+	WECHAT_ERR_USERTOKEN_EXPIRED:       "wechat user_token is expired",
+	MOVIE_EXIST:                        "movie already exists",
+	CHAPTER_EXIST:                      "chapter already exists",
+	EPISODE_EXIST:                      "episode already exists",
+	SCENE_EXIST:                        "scene already exists",
+	DATA_EXIST:                         "data already exists",
+	NOT_INVITED:                        "not invited user",
+	NOT_ADMIN:                          "not admin user",
+	ACCESS_DENIED:                      "access denied",
+	DELETE_ADMIN_WRONG:                 "super administrator cannot be deleted",
+	SERVER_WRONG:                       "Internal Server Error",
+	OPERATE_ARTICLE_STATUS_ERR:         "The article is on the shelf and cannot be operated",
+	OPERATE_LABEL_STATUS_ERR:           "Tab is open and not operable",
+	ERR_INIT_SDK_NOT_CLIENT:            "sdk client is nil",
+	ERR_LOGININFO_NIL:                  "reset time, logininfo is nil",
+	ERR_JSON_MARSHAL:                   "json marshal err",
+	ERR_INIT_SDK_NOT_LOGINED:           "sdk client isn't logined",
+	ERR_SCENE_LOCK:                     "the scene not unlock",
 	USER_PAYMENT_SUCCESS:               "payment success",
 	USER_PAYMENT_TIMEOUT:               "payment timeout",
 	USER_PAYMENT_PROCESSING:            "payment processing",
@@ -126,59 +118,50 @@ type ApiResponse struct {
 }
 
 var WrongMessageZh = map[int32]string{
-	SUCCESS: "请求成功",
-
-	ACCESS_TOKEN_INVALID:   "无效token",
-	ACCESS_EXPIRED:         "用户凭证过期",
-	REFRESH_EXPIRED:        "刷新凭证过期",
-	ACCESS_DENY:            "权限不足",
-	ACCESS_NOT_FOUND:       "账户不存在",
-	ACCESS_PWD_WRONG:       "用户名或密码不正确",
-	ACCESS_KEY_INVALID:     "AccessKey无效",
-	ACCOUNT_ALREADY_EXISTS: "用户已存在",
-	ACCESS_TOO_FAST:        "太频繁了",
-	ACCESS_CODE_WRONG:      "验证码错误",
-	DELETE_ADMIN_WRONG:     "超级管理员不可删除",
-	GROUP_ALREADY_EXISTS:   "用户组已存在",
-	CANT_CREATE_GROUP:      "超级管理员不可创建组",
-	CANT_CREATE_ACCOUNT:    "无法创建子账号,请用根账号创建",
-	MOVIE_EXIST:            "该标题的影剧已经存在",
-	CHAPTER_EXIST:          "该影剧下此标题的章节已经存在",
-	EPISODE_EXIST:          "该章节下此标题的剧集已经存在",
-	SCENE_EXIST:            "该章节下此标题的场景已经存在",
-	DATA_EXIST:             "该标题的数据已经存在",
-	NOT_INVITED:            "不是受邀用户",
-	NOT_ADMIN:              "不是管理员用户",
-	ACCESS_DENIED:          "访问的资源没有足够的权限",
-
-	NOT_FOUND: "记录未找到",
-
-	FAIL:                         "请求失败",
-	WRONG_PARAM:                  "参数错误",
-	NOT_FOUND_METHOD:             "未找到请求方法",
-	METADATA_NOT_FOUND:           "没找到metadata",
-	AUTHORIZATION_NOT_FOUND:      "没找到验证头",
-	ACCESSKEY_NOT_FOUND:          "没找到用户appid",
-	WRONG_CAPTCHA:                "验证码错误",
-	WECHAT_ERR_USERTOKEN_EXPIRED: "微信授权中用户的token已过期",
-
-	SERVER_WRONG: "服务器错误",
-
-	OPERATE_ARTICLE_STATUS_ERR: "文章处于上架状态，不可操作",
-	OPERATE_LABEL_STATUS_ERR:   "标签处于开放状态，不可操作",
-	ERR_INIT_SDK_NOT_CLIENT:    "客户端尚未完成初始化",
-	ERR_LOGININFO_NIL:          "重置过期时间时，返回的登录信息为空",
-	ERR_JSON_MARSHAL:           "json序列化错误",
-	ERR_INIT_SDK_NOT_LOGINED:   "sdk尚未登录",
-
-	ERR_SCENE_LOCK: "该场景尚未解锁，请通关相关剧情",
-
-	USER_PAYMENT_SUCCESS:    "支付成功",
-	USER_PAYMENT_TIMEOUT:    "支付超时",
-	USER_PAYMENT_PROCESSING: "支付处理中",
-	USER_PAYMENT_FAIL:       "支付失败",
-
-	// 交易中心相关错误码
+	SUCCESS:                            "请求成功",
+	ACCESS_TOKEN_INVALID:               "无效token",
+	ACCESS_EXPIRED:                     "用户凭证过期",
+	REFRESH_EXPIRED:                    "刷新凭证过期",
+	ACCESS_DENY:                        "权限不足",
+	ACCESS_NOT_FOUND:                   "账户不存在",
+	ACCESS_PWD_WRONG:                   "用户名或密码不正确",
+	ACCESS_KEY_INVALID:                 "AccessKey无效",
+	ACCOUNT_ALREADY_EXISTS:             "用户已存在",
+	ACCESS_TOO_FAST:                    "太频繁了",
+	ACCESS_CODE_WRONG:                  "验证码错误",
+	DELETE_ADMIN_WRONG:                 "超级管理员不可删除",
+	GROUP_ALREADY_EXISTS:               "用户组已存在",
+	CANT_CREATE_GROUP:                  "超级管理员不可创建组",
+	CANT_CREATE_ACCOUNT:                "无法创建子账号,请用根账号创建",
+	MOVIE_EXIST:                        "该标题的影剧已经存在",
+	CHAPTER_EXIST:                      "该影剧下此标题的章节已经存在",
+	EPISODE_EXIST:                      "该章节下此标题的剧集已经存在",
+	SCENE_EXIST:                        "该章节下此标题的场景已经存在",
+	DATA_EXIST:                         "该标题的数据已经存在",
+	NOT_INVITED:                        "不是受邀用户",
+	NOT_ADMIN:                          "不是管理员用户",
+	ACCESS_DENIED:                      "访问的资源没有足够的权限",
+	NOT_FOUND:                          "记录未找到",
+	FAIL:                               "请求失败",
+	WRONG_PARAM:                        "参数错误",
+	NOT_FOUND_METHOD:                   "未找到请求方法",
+	METADATA_NOT_FOUND:                 "没找到metadata",
+	AUTHORIZATION_NOT_FOUND:            "没找到验证头",
+	ACCESSKEY_NOT_FOUND:                "没找到用户appid",
+	WRONG_CAPTCHA:                      "验证码错误",
+	WECHAT_ERR_USERTOKEN_EXPIRED:       "微信授权中用户的token已过期",
+	SERVER_WRONG:                       "服务器错误",
+	OPERATE_ARTICLE_STATUS_ERR:         "文章处于上架状态，不可操作",
+	OPERATE_LABEL_STATUS_ERR:           "标签处于开放状态，不可操作",
+	ERR_INIT_SDK_NOT_CLIENT:            "客户端尚未完成初始化",
+	ERR_LOGININFO_NIL:                  "重置过期时间时，返回的登录信息为空",
+	ERR_JSON_MARSHAL:                   "json序列化错误",
+	ERR_INIT_SDK_NOT_LOGINED:           "sdk尚未登录",
+	ERR_SCENE_LOCK:                     "该场景尚未解锁，请通关相关剧情",
+	USER_PAYMENT_SUCCESS:               "支付成功",
+	USER_PAYMENT_TIMEOUT:               "支付超时",
+	USER_PAYMENT_PROCESSING:            "支付处理中",
+	USER_PAYMENT_FAIL:                  "支付失败",
 	TRANSACTION_ERR_RESOURCES_OCCUPIED: "该资源被其他资源占用",
 }
 
