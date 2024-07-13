@@ -23,8 +23,8 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		fullAddrAndPort := strings.Split(fullAddr, ":")
 		logx.Infof("client ip : %s", fullAddrAndPort[0])
 		logx.Infof("client port : %s", fullAddrAndPort[1])
-		ctx = context.WithValue(r.Context(), "clientIp", fullAddrAndPort[0])
-		ctx = context.WithValue(r.Context(), "clientPort", fullAddrAndPort[1])
+		ctx = context.WithValue(ctx, "clientIp", fullAddrAndPort[0])
+		ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
 		next(w, r)
 	}
