@@ -2,12 +2,47 @@ package wechat
 
 import (
 	"crypto"
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/rsa"
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
 	wechatUtils "github.com/wechatpay-apiv3/wechatpay-go/utils"
+	"log"
 )
+
+func WechatCallBackBodyDecode(APIv3Secret, ResourceNonce, Ciphertext, AssociatedData string) ([]byte, error) {
+	// 创建一个 AES cipher.Block，需要确保 key 是正确的长度
+	block, err := aes.NewCipher([]byte(APIv3Secret))
+	if err != nil {
+		log.Printf("NewCipher failed, error=%s", err.Error())
+		return nil, err
+	}
+
+	// 创建一个 AES-GCM 实例
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		log.Printf("NewGCM failed, error=%s", err.Error())
+		return nil, err
+	}
+
+	decodedCiphertext, err := base64.StdEncoding.DecodeString(Ciphertext)
+	if err != nil {
+		log.Printf("base64 decode failed, error=%s", err.Error())
+		return nil, err
+	}
+
+	nonce := []byte(ResourceNonce)
+
+	// 解密数据
+	decrypted, err := aesGCM.Open(nil, nonce, decodedCiphertext, []byte(AssociatedData))
+	if err != nil {
+		log.Printf("Open failed, error=%s", err.Error())
+		return nil, err
+	}
+	return decrypted, nil
+}
 
 func WechatVerifySignature(pubKeyData string, signatureFile string, verifyData string) error {
 	certificate, err := wechatUtils.LoadCertificate(pubKeyData)
