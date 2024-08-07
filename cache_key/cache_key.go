@@ -16,7 +16,7 @@ const (
 
 	HTTP_ACCESS_TOKEN_KEY = "%s:httpAccessToken-%d"
 
-	ACCOUNT_AUTH_KEY = "%s:accountAuth-%d"
+	ACCOUNT_AUTH_KEY = "%s:accountAuth-%s"
 
 	EMS_AUTH_KEY = "%s:emsAuth-%s"
 
