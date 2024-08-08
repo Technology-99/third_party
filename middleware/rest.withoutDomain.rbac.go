@@ -86,11 +86,6 @@ func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		// subect, object, action
 		subect := r.Context().Value("UserId").(uint)
 
-		// note: 从请求中获取object
-		//logx.Infof("r.URL.Path", r.URL.Path)
-		//logx.Infof("r.RequestURI", r.RequestURI)
-		//logx.Infof("r.URL.RawPath", r.URL.RawPath)
-
 		object := r.URL.Path
 
 		switch m.TypeStr {
@@ -114,6 +109,7 @@ func (m *RestRbacInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		}
 
 		if !ok {
+			logx.Errorf("sub: %s, object: %s, action: %s, checkPermission no pass", fmt.Sprintf(commKey.RBAC_SUB, subect), object, action)
 			CommonErrResponse(w, r, response.ACCESS_DENY)
 			return
 		}
