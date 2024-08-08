@@ -58,6 +58,7 @@ func (m *RestRbacInterceptorMiddleware) HandleWithWhiteList(next http.HandlerFun
 		for _, v := range m.WhiteList {
 			if v == object {
 				next(w, r)
+				return
 			}
 		}
 
