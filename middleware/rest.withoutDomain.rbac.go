@@ -72,6 +72,7 @@ func (m *RestRbacInterceptorMiddleware) HandleWithWhiteList(next http.HandlerFun
 		}
 
 		if !ok {
+			logx.Errorf("sub: %s, object: %s, action: %s, checkPermission no pass", fmt.Sprintf(commKey.RBAC_SUB, subect), object, action)
 			CommonErrResponse(w, r, response.ACCESS_DENY)
 			return
 		}
