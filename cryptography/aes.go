@@ -194,9 +194,9 @@ func EncryptByAes(data []byte, key []byte) (string, error) {
 
 // DecryptByAes Aes 解密
 func DecryptByAes(data []byte, key []byte) ([]byte, error) {
-	dataByte, err := base64.StdEncoding.DecodeString(data)
-	if err != nil {
-		return nil, err
-	}
-	return AesDecrypt(dataByte, key)
+	//dataByte, err := base64.StdEncoding.DecodeString(data)
+	//if err != nil {
+	//	return nil, err
+	//}
+	return AesDecrypt(data, key)
 }
