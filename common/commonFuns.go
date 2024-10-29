@@ -38,6 +38,30 @@ var (
 	}
 )
 
+func CalculateAgeTime(birthday time.Time) int {
+	now := time.Now()
+	age := now.Year() - birthday.Year()
+
+	if now.YearDay() < birthday.YearDay() {
+		age--
+	}
+	return age
+}
+
+func CalculateAge(birthday string) int {
+	if birthday == "0000-00-00" || birthday == "" || len(birthday) != 10 {
+		return 0
+	}
+	birthdayTime, _ := time.Parse(time.DateOnly, birthday)
+	now := time.Now()
+	age := now.Year() - birthdayTime.Year()
+
+	if now.YearDay() < birthdayTime.YearDay() {
+		age--
+	}
+	return age
+}
+
 func BindAndCheck(ctx *gin.Context, data interface{}) error {
 	if err := ctx.ShouldBindJSON(data); err != nil {
 		return errors.New(fmt.Sprintf("bindjson err%s", err))
