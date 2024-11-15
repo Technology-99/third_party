@@ -20,7 +20,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -38,22 +37,6 @@ var (
 		Timeout: 30 * time.Second,
 	}
 )
-
-func Map2Bytes(data map[string]uint8) []byte {
-	// note: 转换成buffer
-	var result []byte
-	keys := make([]int, 0, len(data))
-	for k := range data {
-		key, _ := strconv.Atoi(k) // 转换键为整数
-		keys = append(keys, key)
-	}
-	sort.Ints(keys) // 按键升序排列
-
-	for _, k := range keys {
-		result = append(result, data[strconv.Itoa(k)]) // 将值转换为 byte 类型
-	}
-	return result
-}
 
 func CalculateAgeTime(birthday time.Time) int {
 	now := time.Now()
