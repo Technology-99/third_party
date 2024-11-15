@@ -79,5 +79,10 @@ func SplitBytes(data []byte, segmentSize int) [][]byte {
 		end := start + segmentSize
 		result = append(result, data[start:end])
 	}
+	// 保留多余部分
+	//if len(data)%segmentSize != 0 {
+	//	remainderStart := totalSegments * segmentSize
+	//	result = append(result, data[remainderStart:])
+	//}
 	return result
 }
