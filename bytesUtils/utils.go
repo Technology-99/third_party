@@ -7,6 +7,35 @@ import (
 	"strconv"
 )
 
+func BytesCombineBytes(high, low byte) int64 {
+	highStr := fmt.Sprintf("0x%x", high)
+	lowStr := fmt.Sprintf("0x%x", low)
+	highNum, err := strconv.ParseInt(highStr, 16, 64) // base=16, bitSize=64
+	if err != nil {
+		fmt.Println("SixteenStr2int64 Error:", err)
+		return 0
+	}
+	lowNum, err := strconv.ParseInt(lowStr, 16, 64) // base=16, bitSize=64
+	if err != nil {
+		fmt.Println("SixteenStr2int64 Error:", err)
+		return 0
+	}
+	// 左移高位 8 位，使用按位或操作合并低位
+	result := (highNum << 8) | lowNum
+	return result
+}
+
+func SixteenStr2int64(param byte) int64 {
+	hexStr := fmt.Sprintf("0x%x", param)
+	// 将 16 进制字符串解析为数字
+	number, err := strconv.ParseInt(hexStr, 16, 64) // base=16, bitSize=64
+	if err != nil {
+		fmt.Println("SixteenStr2int64 Error:", err)
+		return 0
+	}
+	return number
+}
+
 func CombineBytes(high, low int) int {
 	// 左移高位 8 位，使用按位或操作合并低位
 	result := (high << 8) | low
