@@ -23,11 +23,11 @@ func Map2Bytes(data map[string]uint8) []byte {
 	return result
 }
 
-func ten2sixteen2uint(param byte) uint {
+func Ten2sixteen2uint(param byte) uint {
 	return common.Str2Uint(fmt.Sprintf("%x", param))
 }
 
-func splitBytes(data []byte, segmentSize int) [][]byte {
+func SplitBytes(data []byte, segmentSize int) [][]byte {
 	// 计算能分割的段数
 	totalSegments := len(data) / segmentSize
 
