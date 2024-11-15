@@ -7,6 +7,12 @@ import (
 	"strconv"
 )
 
+func CombineBytes(high, low int) int {
+	// 左移高位 8 位，使用按位或操作合并低位
+	result := (high << 8) | low
+	return result
+}
+
 func Map2Bytes(data map[string]uint8) []byte {
 	// note: 转换成buffer
 	var result []byte
