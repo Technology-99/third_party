@@ -13,6 +13,10 @@ func CombineBytes(high, low int) int {
 	return result
 }
 
+func Ten2Sixteen(param byte) int {
+	return common.Str2Int(fmt.Sprintf("0x%x", param))
+}
+
 func Map2Bytes(data map[string]uint8) []byte {
 	// note: 转换成buffer
 	var result []byte
