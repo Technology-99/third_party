@@ -6,16 +6,18 @@ import (
 	"time"
 )
 
-type JwtCommonClaims struct {
-	UserId    uint
+type JwtRsaCommonCustomClaims struct {
 	LoginTime time.Time
 	jwt.StandardClaims
 }
 
-func JwtCommonCreateToken(exp int, UserId uint, key string, loginTime time.Time) (string, int64, error) {
+func JwtRsaCommonCreateToken(exp int, privateKey string, loginTime time.Time) (string, int64, error) {
+	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(privateKey))
+	if err != nil {
+		return "", -1, err
+	}
 	expiresAt := time.Now().Add(time.Duration(exp) * time.Second).Unix()
-	customClaims := &JwtWithoutDomainClaims{
-		UserId:    UserId,
+	customClaims := &JwtRsaCommonCustomClaims{
 		LoginTime: loginTime,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt, // 过期时间
@@ -31,14 +33,18 @@ func JwtCommonCreateToken(exp int, UserId uint, key string, loginTime time.Time)
 }
 
 // 解析 token
-func JwtCommonParseToken(tokenString, key string) (*JwtWithoutDomainClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &JwtWithoutDomainClaims{}, func(token *jwt.Token) (interface{}, error) {
+func JwtRsaCommonParseToken(tokenString, pubKey string) (*JwtRsaCommonCustomClaims, error) {
+	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
+	if err != nil {
+		return nil, err
+	}
+	token, err := jwt.ParseWithClaims(tokenString, &JwtRsaCommonCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return key, nil
 	})
-	if claims, ok := token.Claims.(*JwtWithoutDomainClaims); ok && token.Valid {
+	if claims, ok := token.Claims.(*JwtRsaCommonCustomClaims); ok && token.Valid {
 		return claims, nil
 	} else {
 		return nil, err
