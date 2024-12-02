@@ -14,6 +14,8 @@ const (
 
 	REFRESH_TOKEN_KEY = "%s:refreshToken-%s"
 
+	ENCRYPTION_DATA_KEY = "%s:encryption-%s"
+
 	HTTP_ACCESS_TOKEN_KEY = "%s:httpAccessToken-%d"
 
 	ACCOUNT_AUTH_KEY = "%s:accountAuth-%s"
