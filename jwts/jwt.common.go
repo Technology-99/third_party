@@ -7,15 +7,13 @@ import (
 )
 
 type JwtCommonClaims struct {
-	UserId    uint
 	LoginTime time.Time
 	jwt.StandardClaims
 }
 
-func JwtCommonCreateToken(exp int, UserId uint, key string, loginTime time.Time) (string, int64, error) {
+func JwtCommonCreateToken(exp int, key string, loginTime time.Time) (string, int64, error) {
 	expiresAt := time.Now().Add(time.Duration(exp) * time.Second).Unix()
 	customClaims := &JwtWithoutDomainClaims{
-		UserId:    UserId,
 		LoginTime: loginTime,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt, // 过期时间
