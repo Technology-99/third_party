@@ -69,11 +69,11 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		ctx = context.WithValue(ctx, CtxUserAgent, userAgent)
 
 		xAccessKeyFor := r.Header.Get(commKey.HeaderXAccessKeyFor)
-		ctx = context.WithValue(r.Context(), CtxXAccessKeyFor, xAccessKeyFor)
 		xAuthMethodFor := r.Header.Get(commKey.HeaderXAuthMethodFor)
-		ctx = context.WithValue(r.Context(), CtxXAuthMethodFor, xAuthMethodFor)
 		xAccountFor := r.Header.Get(commKey.HeaderXAccessKeyFor)
-		ctx = context.WithValue(r.Context(), CtxXAccountFor, xAccountFor)
+		ctx = context.WithValue(ctx, CtxXAccessKeyFor, xAccessKeyFor)
+		ctx = context.WithValue(ctx, CtxXAuthMethodFor, xAuthMethodFor)
+		ctx = context.WithValue(ctx, CtxXAccountFor, xAccountFor)
 
 		//ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
