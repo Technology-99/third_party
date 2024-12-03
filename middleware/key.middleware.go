@@ -2,6 +2,7 @@ package middleware
 
 const (
 	CtxClientIp        = "ClientIp"
+	CtxClientPort      = "ClientPort"
 	CtxFullMethod      = "FullMethod"
 	CtxRequestURI      = "RequestURI"
 	CtxRequestID       = "RequestID"
