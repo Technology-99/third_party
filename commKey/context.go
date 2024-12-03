@@ -16,6 +16,6 @@ const (
 )
 
 const (
-	RBAC_DOMAIN = "TID_%d"
-	RBAC_SUB    = "UID_%d"
+	RBAC_DOMAIN = "TID_%s"
+	RBAC_SUB    = "UID_%s"
 )
