@@ -21,6 +21,7 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		ctx := context.WithValue(r.Context(), CtxFullMethod, r.URL.Path)
 		ctx = context.WithValue(ctx, CtxRequestURI, r.RequestURI)
 		fullAddr := httpx.GetRemoteAddr(r)
+		logx.Infof("fullAddr: %s", fullAddr)
 		fullAddrAndPort := strings.Split(fullAddr, ":")
 		ctx = context.WithValue(ctx, CtxClientIp, fullAddrAndPort[0])
 		logx.Infof("client ip : %s", fullAddrAndPort[0])
