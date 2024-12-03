@@ -20,7 +20,11 @@ func JwtRSACommonCreateToken(claims *jwt.StandardClaims, privateKey string) (str
 	return tokenString, claims.ExpiresAt, nil
 }
 
-func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
+func JwtRSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.StandardClaims, error) {
+	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
+	if err != nil {
+		return nil, err
+	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -44,7 +48,11 @@ func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClai
 	}
 }
 
-func JwtRSACommonParse(tokenString, key string) (*jwt.Token, error) {
+func JwtRSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
+	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
+	if err != nil {
+		return nil, err
+	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
