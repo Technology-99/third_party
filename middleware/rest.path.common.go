@@ -33,6 +33,9 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 			requestID = ctx.Value("RequestID").(string)
 		}
 		ctx = context.WithValue(ctx, "RequestID", requestID)
+		// 获取 User-Agent
+		userAgent := r.Header.Get("User-Agent")
+		ctx = context.WithValue(ctx, "userAgent", userAgent)
 		//ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
 		next(w, r)
