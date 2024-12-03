@@ -22,7 +22,7 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		ctx = context.WithValue(ctx, "RequestURI", r.RequestURI)
 		fullAddr := httpx.GetRemoteAddr(r)
 		fullAddrAndPort := strings.Split(fullAddr, ":")
-		ctx = context.WithValue(ctx, "clientIp", fullAddrAndPort[0])
+		ctx = context.WithValue(ctx, "ClientIp", fullAddrAndPort[0])
 		logx.Infof("client ip : %s", fullAddrAndPort[0])
 		logx.Infof("requestID: %v", ctx.Value("RequestID"))
 
@@ -35,7 +35,7 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		ctx = context.WithValue(ctx, "RequestID", requestID)
 		// 获取 User-Agent
 		userAgent := r.Header.Get("User-Agent")
-		ctx = context.WithValue(ctx, "userAgent", userAgent)
+		ctx = context.WithValue(ctx, "UserAgent", userAgent)
 		//ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
 		next(w, r)
