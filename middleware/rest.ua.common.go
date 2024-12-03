@@ -15,8 +15,10 @@ type UaParserInterceptorMiddleware struct {
 	Uaparser *uaparser.Parser
 }
 
-func NewUaParserInterceptorMiddleware() *UaParserInterceptorMiddleware {
-	return &UaParserInterceptorMiddleware{}
+func NewUaParserInterceptorMiddleware(uaparser *uaparser.Parser) *UaParserInterceptorMiddleware {
+	return &UaParserInterceptorMiddleware{
+		Uaparser: uaparser,
+	}
 }
 
 func (m *UaParserInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
