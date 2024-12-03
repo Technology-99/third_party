@@ -13,6 +13,6 @@ const (
 	HeaderAuthorization  = "Authorization"
 	HeaderXAuthMethodFor = "X-AuthMethod-For"
 	HeaderXAccountFor    = "X-Account-For"
-	HeaderXACCESSKEYFor  = "X-AccessKey-For"
+	HeaderXAccessKeyFor  = "X-AccessKey-For"
 	HeaderXRequestIDFor  = "X-RequestID-For"
 )
