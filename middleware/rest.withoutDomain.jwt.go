@@ -26,13 +26,13 @@ func NewRestJwtAuthInterceptorMiddleware(name string, rdb *redis.Redis) *RestJwt
 
 func (m *RestJwtAuthInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		authToken := r.Header.Get(commKey.HANDER_AUTHORIZATION)
+		authToken := r.Header.Get(commKey.HeaderAuthorization)
 		if authToken == "" || len(authToken) <= 7 {
 			CommonErrResponse(w, r, response.AUTHORIZATION_NOT_FOUND)
 			return
 		}
 		token := authToken[7:]
-		key := fmt.Sprintf(cache_key.ACCESS_TOKEN_KEY, m.SvcName, r.Header.Get(commKey.HANDER_ACCESSKEY))
+		key := fmt.Sprintf(cache_key.ACCESS_TOKEN_KEY, m.SvcName, r.Header.Get(commKey.HeaderXAccessKeyFor))
 		logx.Infof("key: %v", key)
 		pubKey, err := m.Redis.Get(key)
 		if err != nil {
