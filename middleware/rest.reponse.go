@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Technology-99/third_party/response"
 	"github.com/Technology-99/third_party/sony"
@@ -16,10 +17,19 @@ func CommonErrResponse(w http.ResponseWriter, r *http.Request, Code int32, v ...
 		msg = response.StatusText(Code)
 	}
 
+	requestID := ""
+	if r.Context().Value("RequestID") == nil {
+		requestID = sony.NextId()
+	} else {
+		requestID = r.Context().Value("RequestID").(string)
+	}
+	ctx := context.WithValue(r.Context(), "RequestID", requestID)
+	r = r.WithContext(ctx)
+
 	resp := response.CommonResponse{
 		Code:      Code,
 		Msg:       msg,
-		RequestID: sony.NextId(),
+		RequestID: requestID,
 		Path:      r.RequestURI,
 	}
 	body, _ := json.Marshal(&resp)
