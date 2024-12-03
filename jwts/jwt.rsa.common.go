@@ -6,45 +6,84 @@ import (
 	"time"
 )
 
-type JwtRsaCommonCustomClaims struct {
-	LoginTime time.Time
-	jwt.StandardClaims
-}
-
-func JwtRsaCommonCreateToken(exp int, privateKey string, loginTime time.Time) (string, int64, error) {
+func JwtRSACommonCreateToken(claims *jwt.StandardClaims, privateKey string) (string, int64, error) {
 	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(privateKey))
 	if err != nil {
 		return "", -1, err
 	}
-	expiresAt := time.Now().Add(time.Duration(exp) * time.Second).Unix()
-	customClaims := &JwtRsaCommonCustomClaims{
-		LoginTime: loginTime,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expiresAt, // 过期时间
-		},
-	}
 	//采用 RS256 加密算法
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, customClaims)
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	tokenString, err := token.SignedString(key)
 	if err != nil {
 		return "", -1, err
 	}
-	return tokenString, expiresAt, nil
+	return tokenString, claims.ExpiresAt, nil
 }
 
-// 解析 token
-func JwtRsaCommonParseToken(tokenString, pubKey string) (*JwtRsaCommonCustomClaims, error) {
-	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
-	if err != nil {
-		return nil, err
-	}
-	token, err := jwt.ParseWithClaims(tokenString, &JwtRsaCommonCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return key, nil
 	})
-	if claims, ok := token.Claims.(*JwtRsaCommonCustomClaims); ok && token.Valid {
+	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
+		// 验证过期时间
+		if time.Now().Unix() > claims.ExpiresAt {
+			fmt.Println("Token has expired")
+			return nil, ErrorTokenHasExpired
+		}
+		// 验证开始时间
+		if time.Now().Unix() < claims.NotBefore {
+			fmt.Println("Token not active yet")
+			return nil, ErrorTokenNotActiveYet
+		}
+		return claims, nil
+	} else {
+		return nil, err
+	}
+}
+
+func JwtRSACommonParse(tokenString, key string) (*jwt.Token, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return key, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
+func JwtRSACommonVerify(token *jwt.Token, Audience, Issuer string) (*jwt.StandardClaims, error) {
+	var err error
+	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
+		// 验证受众
+		if claims.Audience != Audience {
+			fmt.Println("Invalid audience")
+			return nil, ErrorTokenInvalidAudience
+		}
+
+		// 验证过期时间
+		if time.Now().Unix() > claims.ExpiresAt {
+			fmt.Println("Token has expired")
+			return nil, ErrorTokenHasExpired
+		}
+		// 验证签发者
+		if claims.Issuer != Issuer {
+			fmt.Println("Invalid issuer")
+			return nil, ErrorTokenInvalidIssuer
+		}
+
+		// 验证开始时间
+		if time.Now().Unix() < claims.NotBefore {
+			fmt.Println("Token not active yet")
+			return nil, ErrorTokenNotActiveYet
+		}
+
+		// 验证tokenId和Subject, 无法验证, 返回标准结构体
 		return claims, nil
 	} else {
 		return nil, err
