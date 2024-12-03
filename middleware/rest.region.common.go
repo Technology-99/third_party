@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"github.com/Technology-99/third_party/sony"
 	"github.com/lionsoul2014/ip2region/v1.0/binding/golang/ip2region"
 	"github.com/zeromicro/go-zero/core/logc"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -27,26 +26,26 @@ func (m *RegionInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handler
 		ctx := r.Context()
 
 		clientIp := ""
-		if ctx.Value("ClientIp") == nil {
-			clientIp = sony.NextId()
-		} else {
+		if ctx.Value(CtxClientIp) == nil {
 			fullAddr := httpx.GetRemoteAddr(r)
 			fullAddrAndPort := strings.Split(fullAddr, ":")
-			ctx = context.WithValue(ctx, "ClientIp", fullAddrAndPort[0])
+			ctx = context.WithValue(ctx, CtxClientIp, fullAddrAndPort[0])
 			logx.Infof("client ip : %s", fullAddrAndPort[0])
 			clientIp = fullAddrAndPort[0]
+		} else {
+			clientIp = ctx.Value(CtxClientIp).(string)
 		}
 
 		startTime := time.Now()
 		logc.Debugf(ctx, "起始时间: %s", startTime.Format(time.DateTime))
 
 		info, _ := m.Region.MemorySearch(clientIp)
-		ctx = context.WithValue(ctx, "cityId", info.CityId)
-		ctx = context.WithValue(ctx, "country", info.Country)
-		ctx = context.WithValue(ctx, "region", info.Region)
-		ctx = context.WithValue(ctx, "province", info.Province)
-		ctx = context.WithValue(ctx, "city", info.City)
-		ctx = context.WithValue(ctx, "iSP", info.ISP)
+		ctx = context.WithValue(ctx, CtxCityId, info.CityId)
+		ctx = context.WithValue(ctx, CtxCountry, info.Country)
+		ctx = context.WithValue(ctx, CtxRegion, info.Region)
+		ctx = context.WithValue(ctx, CtxProvince, info.Province)
+		ctx = context.WithValue(ctx, CtxCity, info.City)
+		ctx = context.WithValue(ctx, CtxISP, info.ISP)
 		endTime := time.Now()
 		logc.Debugf(ctx, "结束时间: %s", endTime.Format(time.DateTime))
 		logc.Infof(ctx, "地理位置中间件耗时: %v", endTime.Sub(startTime).Milliseconds())

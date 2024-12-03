@@ -18,24 +18,23 @@ func NewPathHttpInterceptorMiddleware() *PathHttpInterceptorMiddleware {
 
 func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.WithValue(r.Context(), "FullMethod", r.URL.Path)
-		ctx = context.WithValue(ctx, "RequestURI", r.RequestURI)
+		ctx := context.WithValue(r.Context(), CtxFullMethod, r.URL.Path)
+		ctx = context.WithValue(ctx, CtxRequestURI, r.RequestURI)
 		fullAddr := httpx.GetRemoteAddr(r)
 		fullAddrAndPort := strings.Split(fullAddr, ":")
-		ctx = context.WithValue(ctx, "ClientIp", fullAddrAndPort[0])
+		ctx = context.WithValue(ctx, CtxClientIp, fullAddrAndPort[0])
 		logx.Infof("client ip : %s", fullAddrAndPort[0])
-		logx.Infof("requestID: %v", ctx.Value("RequestID"))
 
 		requestID := ""
-		if ctx.Value("RequestID") == nil {
+		if ctx.Value(CtxRequestID) == nil {
 			requestID = sony.NextId()
 		} else {
-			requestID = ctx.Value("RequestID").(string)
+			requestID = ctx.Value(CtxRequestID).(string)
 		}
-		ctx = context.WithValue(ctx, "RequestID", requestID)
+		ctx = context.WithValue(ctx, CtxRequestID, requestID)
 		// 获取 User-Agent
-		userAgent := r.Header.Get("User-Agent")
-		ctx = context.WithValue(ctx, "UserAgent", userAgent)
+		userAgent := r.Header.Get(CtxUserAgent)
+		ctx = context.WithValue(ctx, CtxUserAgent, userAgent)
 		//ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
 		next(w, r)
