@@ -79,11 +79,6 @@ func JwtRSACommonVerify(token *jwt.Token, Audience, Issuer string) (*jwt.Standar
 			fmt.Println("Token has expired")
 			return nil, ErrorTokenHasExpired
 		}
-		// 验证签发者
-		if claims.Issuer != Issuer {
-			fmt.Println("Invalid issuer")
-			return nil, ErrorTokenInvalidIssuer
-		}
 
 		// 验证开始时间
 		if time.Now().Unix() < claims.NotBefore {
