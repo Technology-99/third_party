@@ -35,6 +35,7 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 			if len(fullAddrAndPort) == 1 {
 				logx.Infof("client ip: %s", fullAddrAndPort[0])
 				ctx = context.WithValue(ctx, CtxClientIp, fullAddrAndPort[0])
+				ctx = context.WithValue(ctx, CtxClientPort, "")
 			} else if len(fullAddrAndPort) == 2 {
 				logx.Infof("client ip: %s", fullAddrAndPort[0])
 				logx.Infof("client port: %s", fullAddrAndPort[1])
