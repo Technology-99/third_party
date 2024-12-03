@@ -15,6 +15,8 @@ const (
 	CtxClaimsSubject   = "Subject"
 	CtxUserAgent       = "User-Agent"
 	CtxXAccessKeyFor   = "X-AccessKey-For"
+	CtxXAuthMethodFor  = "X-AuthMethod-For"
+	CtxXAccountFor     = "X-Account-For"
 	CtxCityId          = "CityId"
 	CtxCountry         = "Country"
 	CtxRegion          = "Region"

@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"github.com/Technology-99/third_party/commKey"
 	"github.com/Technology-99/third_party/sony"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -66,6 +67,14 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		// 获取 User-Agent
 		userAgent := r.Header.Get(CtxUserAgent)
 		ctx = context.WithValue(ctx, CtxUserAgent, userAgent)
+
+		xAccessKeyFor := r.Header.Get(commKey.HeaderXAccessKeyFor)
+		ctx = context.WithValue(r.Context(), CtxXAccessKeyFor, xAccessKeyFor)
+		xAuthMethodFor := r.Header.Get(commKey.HeaderXAuthMethodFor)
+		ctx = context.WithValue(r.Context(), CtxXAuthMethodFor, xAuthMethodFor)
+		xAccountFor := r.Header.Get(commKey.HeaderXAccessKeyFor)
+		ctx = context.WithValue(r.Context(), CtxXAccountFor, xAccountFor)
+
 		//ctx = context.WithValue(ctx, "clientPort", fullAddrAndPort[1])
 		r = r.WithContext(ctx)
 		next(w, r)
