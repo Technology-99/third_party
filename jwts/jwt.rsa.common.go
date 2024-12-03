@@ -65,7 +65,7 @@ func JwtRSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func JwtRSACommonVerify(token *jwt.Token, Audience, Issuer string) (*jwt.StandardClaims, error) {
+func JwtRSACommonVerify(token *jwt.Token, Audience string) (*jwt.StandardClaims, error) {
 	var err error
 	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
 		// 验证受众
