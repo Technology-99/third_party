@@ -12,55 +12,79 @@ package response
 import "errors"
 
 const (
-	SUCCESS                      int32 = 1000
-	ACCESS_TOKEN_INVALID         int32 = 2000
-	ACCESS_EXPIRED               int32 = 2001
-	ACCESS_DENY                  int32 = 2002
-	ACCESS_NOT_FOUND             int32 = 2003
-	ACCESS_PWD_WRONG             int32 = 2004
-	ACCESS_KEY_INVALID           int32 = 2005
-	ACCOUNT_ALREADY_EXISTS       int32 = 2006
-	ACCESS_CODE_WRONG            int32 = 2007
-	GROUP_ALREADY_EXISTS         int32 = 2008
-	ACCESS_TOO_FAST              int32 = 2009
-	DELETE_ADMIN_WRONG           int32 = 2010
-	CANT_CREATE_GROUP            int32 = 2011
-	CANT_CREATE_ACCOUNT          int32 = 2012
-	REFRESH_EXPIRED              int32 = 2013
-	NOT_FOUND                    int32 = 3001
-	FAIL                         int32 = 4000
-	WRONG_PARAM                  int32 = 4001
-	NOT_FOUND_METHOD             int32 = 4004
-	METADATA_NOT_FOUND           int32 = 4005
-	AUTHORIZATION_NOT_FOUND      int32 = 4006
-	ACCESSKEY_NOT_FOUND          int32 = 4007
-	WRONG_CAPTCHA                int32 = 4008
-	WECHAT_ERR_USERTOKEN_EXPIRED int32 = 4009
-	MOVIE_EXIST                  int32 = 4010
-	CHAPTER_EXIST                int32 = 4011
-	EPISODE_EXIST                int32 = 4012
-	SCENE_EXIST                  int32 = 4013
-	DATA_EXIST                   int32 = 4014
-	NOT_INVITED                  int32 = 4015
-	ACCESS_DENIED                int32 = 4016
-	NOT_ADMIN                    int32 = 4017
-	SERVER_WRONG                 int32 = 5000
-	OPERATE_ARTICLE_STATUS_ERR   int32 = 6000
-	OPERATE_LABEL_STATUS_ERR     int32 = 6001
+	SUCCESS int32 = iota + 1000
+)
+
+const (
+	ACCESS_TOKEN_INVALID int32 = iota + 2000
+	ACCESS_EXPIRED
+	ACCESS_DENY
+	ACCESS_NOT_FOUND
+	ACCESS_PWD_WRONG
+	ACCESS_KEY_INVALID
+	ACCOUNT_ALREADY_EXISTS
+	ACCESS_CODE_WRONG
+	GROUP_ALREADY_EXISTS
+	ACCESS_TOO_FAST
+	DELETE_ADMIN_WRONG
+	CANT_CREATE_GROUP
+	CANT_CREATE_ACCOUNT
+	REFRESH_EXPIRED
+
+	ACCESS_NOT_TRUST_DEVICE
+)
+
+const (
+	NOT_FOUND int32 = iota + 3000
+)
+
+const (
+	FAIL int32 = iota + 4000
+	WRONG_PARAM
+	NOT_FOUND_METHOD
+	METADATA_NOT_FOUND
+	AUTHORIZATION_NOT_FOUND
+	ACCESSKEY_NOT_FOUND
+	WRONG_CAPTCHA
+	WECHAT_ERR_USERTOKEN_EXPIRED
+	MOVIE_EXIST
+	CHAPTER_EXIST
+	EPISODE_EXIST
+	SCENE_EXIST
+	DATA_EXIST
+	NOT_INVITED
+	ACCESS_DENIED
+	NOT_ADMIN
+)
+
+const (
+	SERVER_WRONG int32 = 5000 + iota
+)
+
+const (
+	OPERATE_ARTICLE_STATUS_ERR int32 = 6000 + iota
+	OPERATE_LABEL_STATUS_ERR
+)
+
+const (
+
 	// note: sdk error code %5d
-	ERR_INIT_SDK_NOT_CLIENT  int32 = 10001
-	ERR_LOGININFO_NIL        int32 = 10002
-	ERR_JSON_MARSHAL         int32 = 10003
-	ERR_INIT_SDK_NOT_LOGINED int32 = 10004
+	ERR_INIT_SDK_NOT_CLIENT int32 = 10001 + iota
+	ERR_LOGININFO_NIL
+	ERR_JSON_MARSHAL
+	ERR_INIT_SDK_NOT_LOGINED
+)
+
+const (
 	// note: dbl 游戏相关
-	ERR_SCENE_LOCK                     int32 = 600001
-	USER_HAS_PAYMENT                   int32 = 600002
-	USER_NO_PAYMENT                    int32 = 600003
-	USER_PAYMENT_SUCCESS               int32 = 600004
-	USER_PAYMENT_TIMEOUT               int32 = 600005
-	USER_PAYMENT_PROCESSING            int32 = 600006
-	USER_PAYMENT_FAIL                  int32 = 600007
-	TRANSACTION_ERR_RESOURCES_OCCUPIED int32 = 700001
+	ERR_SCENE_LOCK int32 = 600001 + iota
+	USER_HAS_PAYMENT
+	USER_NO_PAYMENT
+	USER_PAYMENT_SUCCESS
+	USER_PAYMENT_TIMEOUT
+	USER_PAYMENT_PROCESSING
+	USER_PAYMENT_FAIL
+	TRANSACTION_ERR_RESOURCES_OCCUPIED
 )
 
 var WrongMessageEn = map[int32]string{
@@ -68,6 +92,7 @@ var WrongMessageEn = map[int32]string{
 	ACCESS_TOKEN_INVALID:               "invalid token",
 	ACCESS_EXPIRED:                     "user licence expired",
 	REFRESH_EXPIRED:                    "refresh licence expired",
+	ACCESS_NOT_TRUST_DEVICE:            "not a trusted device, need secondary verification",
 	ACCESS_DENY:                        "permission denied",
 	ACCESS_NOT_FOUND:                   "account does not exist",
 	ACCESS_PWD_WRONG:                   "incorrect username or password",
@@ -122,6 +147,7 @@ var WrongMessageZh = map[int32]string{
 	ACCESS_TOKEN_INVALID:               "无效token",
 	ACCESS_EXPIRED:                     "用户凭证过期",
 	REFRESH_EXPIRED:                    "刷新凭证过期",
+	ACCESS_NOT_TRUST_DEVICE:            "不是可信设备，需要二次验证",
 	ACCESS_DENY:                        "权限不足",
 	ACCESS_NOT_FOUND:                   "账户不存在",
 	ACCESS_PWD_WRONG:                   "用户名或密码不正确",
