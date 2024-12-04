@@ -15,4 +15,7 @@ const (
 	HeaderXAccountFor    = "X-Account-For"
 	HeaderXAccessKeyFor  = "X-AccessKey-For"
 	HeaderXRequestIDFor  = "X-RequestID-For"
+
+	HeaderXTenantIDFor = "X-TenantId-For"
+	HeaderXDomainIDFor = "X-DomainId-For"
 )
