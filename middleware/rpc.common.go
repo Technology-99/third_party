@@ -11,7 +11,7 @@ import (
 
 // note: 基于grpc的中间件，实现读取metadata中的信息映射到context中
 
-func CtxParseInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+func CtxParseUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 
 	result := &Resp{
 		Code: response.SUCCESS,
@@ -61,6 +61,8 @@ func CtxParseInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryS
 	return handler(ctx, req)
 }
 
+//func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (resp interface{}, err error))
+
 func CtxParseStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (resp interface{}, err error) {
 
 	ctx := ss.Context()
@@ -108,6 +110,7 @@ func CtxParseStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc
 		result.Code = response.METADATA_NOT_FOUND
 		result.Msg = response.StatusText(response.METADATA_NOT_FOUND)
 		return result, nil
+		handler(resp, ss)
 	}
 
 	return handler(srv, ss), nil
