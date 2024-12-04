@@ -6,6 +6,8 @@ const (
 	CtxFullMethod      = "FullMethod"
 	CtxRequestURI      = "RequestURI"
 	CtxRequestID       = "RequestID"
+	CtxTenantId        = "TenantId"
+	CtxDomainId        = "DomainId"
 	CtxClaimsAudience  = "Audience"
 	CtxClaimsExpiresAt = "ExpiresAt"
 	CtxClaimsId        = "Id"
