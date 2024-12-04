@@ -6,14 +6,13 @@ import (
 	"github.com/Technology-99/third_party/commKey"
 	"github.com/Technology-99/third_party/response"
 	"github.com/Technology-99/third_party/sony"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
 
 // note: 基于grpc的中间件，实现读取metadata中的信息映射到context中
 
-func StreamHeaderParseInterceptor(authenticator *auth.Authenticator) grpc.StreamServerInterceptor {
+func StreamHeaderParseInterceptor() grpc.StreamServerInterceptor {
 	return func(svr any, stream grpc.ServerStream, info *grpc.StreamServerInfo,
 		handler grpc.StreamHandler) error {
 		ctx := stream.Context()
@@ -67,7 +66,7 @@ func StreamHeaderParseInterceptor(authenticator *auth.Authenticator) grpc.Stream
 	}
 }
 
-func UnaryHeaderParseInterceptor(authenticator *auth.Authenticator) grpc.UnaryServerInterceptor {
+func UnaryHeaderParseInterceptor() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler) (any, error) {
 
