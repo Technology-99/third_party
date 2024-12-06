@@ -30,6 +30,7 @@ require (
 
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
+	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
@@ -108,6 +109,7 @@ require (
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
