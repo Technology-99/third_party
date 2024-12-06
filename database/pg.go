@@ -40,7 +40,7 @@ func NewPgDbClient(c *PgDbConfig) (*gorm.DB, error) {
 	}
 	realPassword := string(decodedBytes)
 
-	format := "host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s"
+	format := "host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s connect_timeout=30"
 	dsn := fmt.Sprintf(format,
 		c.Host,
 		c.User,
