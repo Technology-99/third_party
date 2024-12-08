@@ -58,12 +58,15 @@ func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.Handl
 		}
 
 		requestID := ""
-		if ctx.Value(CtxRequestID) == nil {
+		xRequestIDFor := r.Header.Get(commKey.HeaderXRequestIDFor)
+		if xRequestIDFor == "" {
 			requestID = sony.NextId()
+			ctx = context.WithValue(ctx, CtxRequestID, requestID)
 		} else {
-			requestID = ctx.Value(CtxRequestID).(string)
+			requestID = xRequestIDFor
 		}
 		ctx = context.WithValue(ctx, CtxRequestID, requestID)
+
 		// 获取 User-Agent
 		userAgent := r.Header.Get(CtxUserAgent)
 		ctx = context.WithValue(ctx, CtxUserAgent, userAgent)
