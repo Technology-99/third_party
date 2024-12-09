@@ -21,6 +21,7 @@ const (
 	ACCESS_DENY
 	ACCESS_NOT_FOUND
 	ACCESS_PWD_WRONG
+	ACCESS_ACCOUNT_INVALID
 	ACCESS_KEY_INVALID
 	ACCOUNT_ALREADY_EXISTS
 	ACCESS_CODE_WRONG
@@ -96,6 +97,7 @@ var WrongMessageEn = map[int32]string{
 	ACCESS_DENY:                        "permission denied",
 	ACCESS_NOT_FOUND:                   "account does not exist",
 	ACCESS_PWD_WRONG:                   "incorrect username or password",
+	ACCESS_ACCOUNT_INVALID:             "account is disable",
 	ACCESS_KEY_INVALID:                 "AccessKey is invalid",
 	ACCOUNT_ALREADY_EXISTS:             "user already exists",
 	ACCESS_CODE_WRONG:                  "verification code error",
@@ -151,6 +153,7 @@ var WrongMessageZh = map[int32]string{
 	ACCESS_DENY:                        "权限不足",
 	ACCESS_NOT_FOUND:                   "账户不存在",
 	ACCESS_PWD_WRONG:                   "用户名或密码不正确",
+	ACCESS_ACCOUNT_INVALID:             "账户已经被冻结",
 	ACCESS_KEY_INVALID:                 "AccessKey无效",
 	ACCOUNT_ALREADY_EXISTS:             "用户已存在",
 	ACCESS_TOO_FAST:                    "太频繁了",
