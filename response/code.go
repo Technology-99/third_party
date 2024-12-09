@@ -33,6 +33,8 @@ const (
 	REFRESH_EXPIRED
 
 	ACCESS_NOT_TRUST_DEVICE
+
+	DATA_EXISTS
 )
 
 const (
@@ -103,6 +105,7 @@ var WrongMessageEn = map[int32]string{
 	ACCESS_CODE_WRONG:                  "verification code error",
 	ACCESS_TOO_FAST:                    "Access too fast",
 	GROUP_ALREADY_EXISTS:               "user group already exists",
+	DATA_EXISTS:                        "data exists",
 	CANT_CREATE_GROUP:                  "Super administrator cannot create groups",
 	CANT_CREATE_ACCOUNT:                "unable to create sub-account, please use root account to create one",
 	NOT_FOUND:                          "record not found",
@@ -160,6 +163,7 @@ var WrongMessageZh = map[int32]string{
 	ACCESS_CODE_WRONG:                  "验证码错误",
 	DELETE_ADMIN_WRONG:                 "超级管理员不可删除",
 	GROUP_ALREADY_EXISTS:               "用户组已存在",
+	DATA_EXISTS:                        "数据已存在",
 	CANT_CREATE_GROUP:                  "超级管理员不可创建组",
 	CANT_CREATE_ACCOUNT:                "无法创建子账号,请用根账号创建",
 	MOVIE_EXIST:                        "该标题的影剧已经存在",
