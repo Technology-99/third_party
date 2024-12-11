@@ -39,7 +39,7 @@ var (
 	}
 )
 
-func maskPhoneWithRegex(phone string) string {
+func MaskPhoneWithRegex(phone string) string {
 	// 匹配区号的正则：支持 "+数字 " 格式
 	re := regexp.MustCompile(`^\+[\d]+\s`)
 	matches := re.FindString(phone)
@@ -60,7 +60,7 @@ func maskPhoneWithRegex(phone string) string {
 	return phone[:3] + "****" + phone[len(phone)-4:]
 }
 
-func maskPhoneDynamic(phone string) string {
+func MaskPhoneDynamic(phone string) string {
 	length := len(phone)
 	if length < 7 {
 		return "Invalid phone number"
