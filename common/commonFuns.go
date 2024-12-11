@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -37,6 +38,36 @@ var (
 		Timeout: 30 * time.Second,
 	}
 )
+
+func maskPhoneWithRegex(phone string) string {
+	// 匹配区号的正则：支持 "+数字 " 格式
+	re := regexp.MustCompile(`^\+[\d]+\s`)
+	matches := re.FindString(phone)
+	if matches != "" {
+		// 提取区号和号码
+		countryCode := matches
+		actualNumber := phone[len(matches):]
+		if len(actualNumber) < 7 {
+			return "Invalid phone number"
+		}
+		// 替换中间部分为星号
+		return countryCode + actualNumber[:3] + "****" + actualNumber[len(actualNumber)-4:]
+	}
+	// 如果没有区号，按普通号码处理
+	if len(phone) < 7 {
+		return "Invalid phone number"
+	}
+	return phone[:3] + "****" + phone[len(phone)-4:]
+}
+
+func maskPhoneDynamic(phone string) string {
+	length := len(phone)
+	if length < 7 {
+		return "Invalid phone number"
+	}
+	// 保留前三位和后四位，中间用星号替代
+	return phone[:3] + "****" + phone[length-4:]
+}
 
 func CalculateAgeTime(birthday time.Time) int {
 	now := time.Now()
