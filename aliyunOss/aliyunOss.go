@@ -27,12 +27,13 @@ type AliyunConf struct {
 	AccessKeyId     string `json:"access_key_id"`
 	AccessKeySecret string `json:"access_key_secret"`
 	Host            string `json:"host"`
-	TenantId        uint   `json:"tenant_id"`
-	IsCallback      bool   `json:"is_callback"`
+	IsMultiTenant   bool   `json:"is_multi_tenant,default:false"`
+	TenantId        uint   `json:"tenant_id,optional"`
+	IsCallback      bool   `json:"is_callback,default:false"`
 	Prefix          string `json:"prefix"`
 	UploadDir       string `json:"upload_dir"`
 	Key             string `json:"key"`
-	CallbackUrl     string `json:"callback_url"`
+	CallbackUrl     string `json:"callback_url,optional"`
 	ExpireTime      int64  `json:"expire_time"`
 	RequestID       string `json:"request_id"`
 }
@@ -64,7 +65,12 @@ func (conf AliyunConf) GetPolicyToken() (*PolicyToken, error) {
 	expire_end := now + conf.ExpireTime
 	//var tokenExpire = get_gmt_iso8601(expire_end)
 
-	uploadUrl := fmt.Sprintf("%s/TID%d/%s/%s", conf.Prefix, conf.TenantId, conf.UploadDir, conf.Key)
+	uploadUrl := ""
+	if conf.IsMultiTenant {
+		uploadUrl = fmt.Sprintf("%s/TID%d/%s/%s", conf.Prefix, conf.TenantId, conf.UploadDir, conf.Key)
+	} else {
+		uploadUrl = fmt.Sprintf("%s/%s/%s", conf.Prefix, conf.UploadDir, conf.Key)
+	}
 
 	//create post policy json
 	var config ConfigStruct
