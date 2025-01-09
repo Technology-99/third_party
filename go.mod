@@ -1,6 +1,6 @@
 module github.com/Technology-99/third_party
 
-go 1.23.4
+go 1.23.3
 
 require (
 	github.com/aliyun/aliyun-log-go-sdk v0.1.53
