@@ -21,6 +21,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -38,6 +39,15 @@ var (
 		Timeout: 30 * time.Second,
 	}
 )
+
+func PrintMemoryUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	log.Printf("Alloc: %v KB\n", m.Alloc/1024)           // 当前已分配的堆内存
+	log.Printf("TotalAlloc: %v KB\n", m.TotalAlloc/1024) // 分配的堆内存总量
+	log.Printf("Sys: %v KB\n", m.Sys/1024)               // 从系统申请的内存
+	log.Printf("NumGC: %v\n", m.NumGC)                   // 垃圾回收的次数
+}
 
 func MaskPhoneWithRegex(phone string) string {
 	// 匹配区号的正则：支持 "+数字 " 格式
