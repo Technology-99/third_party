@@ -35,6 +35,7 @@ const (
 	ACCESS_NOT_TRUST_DEVICE
 
 	DATA_EXISTS
+	ACCOUNT_NOT_FOUND
 )
 
 const (
@@ -115,6 +116,7 @@ var WrongMessageEn = map[int32]string{
 	METADATA_NOT_FOUND:                 "metadata not found",
 	AUTHORIZATION_NOT_FOUND:            "authorization not found",
 	ACCESSKEY_NOT_FOUND:                "accesskey not found",
+	ACCOUNT_NOT_FOUND:                  "account not found",
 	WRONG_CAPTCHA:                      "wrong captcha",
 	WECHAT_ERR_USERTOKEN_EXPIRED:       "wechat user_token is expired",
 	MOVIE_EXIST:                        "movie already exists",
@@ -181,6 +183,7 @@ var WrongMessageZh = map[int32]string{
 	METADATA_NOT_FOUND:                 "没找到metadata",
 	AUTHORIZATION_NOT_FOUND:            "没找到验证头",
 	ACCESSKEY_NOT_FOUND:                "没找到用户appid",
+	ACCOUNT_NOT_FOUND:                  "没找到用户头信息",
 	WRONG_CAPTCHA:                      "验证码错误",
 	WECHAT_ERR_USERTOKEN_EXPIRED:       "微信授权中用户的token已过期",
 	SERVER_WRONG:                       "服务器错误",
