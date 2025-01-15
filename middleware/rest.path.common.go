@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type PathHttpInterceptorMiddleware struct {
@@ -20,8 +21,10 @@ func NewPathHttpInterceptorMiddleware() *PathHttpInterceptorMiddleware {
 
 func (m *PathHttpInterceptorMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now().UnixMilli()
 		ctx := context.WithValue(r.Context(), CtxFullMethod, r.URL.Path)
 		ctx = context.WithValue(ctx, CtxRequestURI, r.RequestURI)
+		ctx = context.WithValue(ctx, CtxStartTime, start)
 		fullAddr := httpx.GetRemoteAddr(r)
 		// 定义正则表达式
 		regex := `^\[?([a-fA-F0-9:.%]+)\]?(?::([0-9]+))?$`

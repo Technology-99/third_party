@@ -1,6 +1,7 @@
 package middleware
 
 const (
+	CtxStartTime       = "StartTime"
 	CtxClientIp        = "ClientIp"
 	CtxClientPort      = "ClientPort"
 	CtxFullMethod      = "FullMethod"
