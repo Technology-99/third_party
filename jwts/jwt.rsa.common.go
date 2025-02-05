@@ -6,30 +6,22 @@ import (
 	"time"
 )
 
-func JwtRSACommonCreateToken(claims *jwt.StandardClaims, privateKey string) (string, int64, error) {
-	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(privateKey))
-	if err != nil {
-		return "", -1, err
-	}
+func JwtRSACommonCreateToken(claims *jwt.StandardClaims, key string) (string, int64, error) {
 	//采用 RS256 加密算法
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	tokenString, err := token.SignedString(key)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(key))
 	if err != nil {
 		return "", -1, err
 	}
 	return tokenString, claims.ExpiresAt, nil
 }
 
-func JwtRSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.StandardClaims, error) {
-	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
-	if err != nil {
-		return nil, err
-	}
+func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return key, nil
+		return []byte(key), nil
 	})
 	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
 		// 验证过期时间
@@ -48,16 +40,12 @@ func JwtRSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.StandardC
 	}
 }
 
-func JwtRSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
-	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(pubKey))
-	if err != nil {
-		return nil, err
-	}
+func JwtRSACommonParse(tokenString, key string) (*jwt.Token, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return key, nil
+		return []byte(key), nil
 	})
 	if err != nil {
 		return nil, err
