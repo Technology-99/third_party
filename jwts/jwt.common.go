@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func JwtRSACommonCreateToken(claims *jwt.StandardClaims, key string) (string, int64, error) {
+func JwtCommonCreateToken(claims *jwt.StandardClaims, key string) (string, int64, error) {
 	//采用 RS256 加密算法
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString([]byte(key))
@@ -16,7 +16,7 @@ func JwtRSACommonCreateToken(claims *jwt.StandardClaims, key string) (string, in
 	return tokenString, claims.ExpiresAt, nil
 }
 
-func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
+func JwtCommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -40,7 +40,7 @@ func JwtRSACommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClai
 	}
 }
 
-func JwtRSACommonParse(tokenString, key string) (*jwt.Token, error) {
+func JwtCommonParse(tokenString, key string) (*jwt.Token, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -53,7 +53,7 @@ func JwtRSACommonParse(tokenString, key string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func JwtRSACommonVerify(token *jwt.Token, Audience string) (*jwt.StandardClaims, error) {
+func JwtCommonVerify(token *jwt.Token, Audience string) (*jwt.StandardClaims, error) {
 	var err error
 	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
 		// 验证受众
