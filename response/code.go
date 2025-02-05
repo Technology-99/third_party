@@ -36,6 +36,10 @@ const (
 
 	DATA_EXISTS
 	ACCOUNT_NOT_FOUND
+
+	NOT_ALLOW_PARAMS
+	SECURITY_TOKEN_INVALID
+	SECURITY_TOKEN_EXPIRED
 )
 
 const (
@@ -141,6 +145,9 @@ var WrongMessageEn = map[int32]string{
 	USER_PAYMENT_PROCESSING:            "payment processing",
 	USER_PAYMENT_FAIL:                  "payment fail",
 	TRANSACTION_ERR_RESOURCES_OCCUPIED: "transaction resources occupied",
+	NOT_ALLOW_PARAMS:                   "not allow params",
+	SECURITY_TOKEN_INVALID:             "security token invalid",
+	SECURITY_TOKEN_EXPIRED:             "security token expired",
 }
 
 type ApiResponse struct {
@@ -199,6 +206,9 @@ var WrongMessageZh = map[int32]string{
 	USER_PAYMENT_PROCESSING:            "支付处理中",
 	USER_PAYMENT_FAIL:                  "支付失败",
 	TRANSACTION_ERR_RESOURCES_OCCUPIED: "该资源被其他资源占用",
+	NOT_ALLOW_PARAMS:                   "不被允许的参数",
+	SECURITY_TOKEN_INVALID:             "错误的安全令牌",
+	SECURITY_TOKEN_EXPIRED:             "安全令牌已过期",
 }
 
 func StatusToErr(code int32, v ...any) error {
