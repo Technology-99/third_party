@@ -28,7 +28,6 @@ type AliyunConf struct {
 	AccessKeySecret string `json:"access_key_secret"`
 	Host            string `json:"host"`
 	IsMultiTenant   bool   `json:"is_multi_tenant,default:false"`
-	RootDomain      uint   `json:"rootDomain,optional"`
 	DomainUniquerId string `json:"domainUniquerId,optional"`
 	IsCallback      bool   `json:"is_callback,default:false"`
 	Prefix          string `json:"prefix"`
