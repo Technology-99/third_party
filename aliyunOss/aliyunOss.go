@@ -29,6 +29,7 @@ type AliyunConf struct {
 	Host            string `json:"host"`
 	IsMultiTenant   bool   `json:"is_multi_tenant,default:false"`
 	RootDomain      uint   `json:"rootDomain,optional"`
+	DomainUniquerId string `json:"domainUniquerId,optional"`
 	IsCallback      bool   `json:"is_callback,default:false"`
 	Prefix          string `json:"prefix"`
 	UploadDir       string `json:"upload_dir"`
@@ -67,7 +68,7 @@ func (conf AliyunConf) GetPolicyToken() (*PolicyToken, error) {
 
 	uploadUrl := ""
 	if conf.IsMultiTenant {
-		uploadUrl = fmt.Sprintf("%s/%s/%s/%s", conf.Prefix, conf.RootDomain, conf.UploadDir, conf.Key)
+		uploadUrl = fmt.Sprintf("%s/%s/%s/%s", conf.Prefix, conf.DomainUniquerId, conf.UploadDir, conf.Key)
 	} else {
 		uploadUrl = fmt.Sprintf("%s/%s/%s", conf.Prefix, conf.UploadDir, conf.Key)
 	}
