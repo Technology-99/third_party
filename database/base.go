@@ -17,3 +17,9 @@ type BaseAdminModel struct {
 	UpdatedBy uint `gorm:"column:updated_by;comment:更新者;type: int" json:"updatedBy"`
 	DeletedBy uint `gorm:"column:deleted_by;comment:删除者;type: int" json:"deletedBy"`
 }
+
+type BaseTenantModel struct {
+	CreatedTenantBy string `gorm:"index:idx_created_tenant_by;column:created_tenant_by;comment:创建数据的租户;type: varchar(255)" json:"createdTenantBy"`
+	UpdatedTenantBy string `gorm:"index:idx_updated_tenant_by;column:updated_tenant_by;comment:更新数据的租户;type: varchar(255)" json:"updatedTenantBy"`
+	DeletedTenantBy string `gorm:"index:idx_deleted_tenant_by;column:deleted_tenant_by;comment:删除数据的租户;type: varchar(255)" json:"deletedTenantBy"`
+}
