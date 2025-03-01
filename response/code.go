@@ -40,6 +40,7 @@ const (
 	NOT_ALLOW_PARAMS
 	SECURITY_TOKEN_INVALID
 	SECURITY_TOKEN_EXPIRED
+	ACCESS_NOT_WHITE_IP
 )
 
 const (
@@ -148,6 +149,7 @@ var WrongMessageEn = map[int32]string{
 	NOT_ALLOW_PARAMS:                   "not allow params",
 	SECURITY_TOKEN_INVALID:             "security token invalid",
 	SECURITY_TOKEN_EXPIRED:             "security token expired",
+	ACCESS_NOT_WHITE_IP:                "access not white ip",
 }
 
 type ApiResponse struct {
@@ -209,6 +211,7 @@ var WrongMessageZh = map[int32]string{
 	NOT_ALLOW_PARAMS:                   "不被允许的参数",
 	SECURITY_TOKEN_INVALID:             "错误的安全令牌",
 	SECURITY_TOKEN_EXPIRED:             "安全令牌已过期",
+	ACCESS_NOT_WHITE_IP:                "访问不是白名单IP",
 }
 
 func StatusToErr(code int32, v ...any) error {
