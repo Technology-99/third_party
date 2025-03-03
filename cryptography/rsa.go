@@ -15,6 +15,7 @@ import (
 	"crypto/rsa"
 	"crypto/sha256"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/pem"
 	"errors"
 	"fmt"
@@ -129,4 +130,67 @@ func RsaDecrypt(ciphertext, keyBytes []byte) ([]byte, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+// 解析 PEM 格式的公钥
+func ParsePublicKey(pemData string) (*rsa.PublicKey, error) {
+	block, _ := pem.Decode([]byte(pemData))
+	if block == nil {
+		return nil, fmt.Errorf("无法解析公钥 PEM")
+	}
+
+	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return nil, fmt.Errorf("公钥解析失败: %v", err)
+	}
+
+	rsaPubKey, ok := pubKey.(*rsa.PublicKey)
+	if !ok {
+		return nil, fmt.Errorf("解析的公钥类型错误")
+	}
+
+	return rsaPubKey, nil
+}
+
+// 解析 PEM 格式的私钥
+func ParsePrivateKey(pemData string) (*rsa.PrivateKey, error) {
+	block, _ := pem.Decode([]byte(pemData))
+	if block == nil {
+		return nil, fmt.Errorf("无法解析私钥 PEM")
+	}
+
+	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		return nil, fmt.Errorf("私钥解析失败: %v", err)
+	}
+
+	return privateKey, nil
+}
+
+// RSA-256 + SHA-256 进行加密
+func EncryptRSA(plainText []byte, publicKey *rsa.PublicKey) (string, error) {
+	encryptedData, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, publicKey, plainText, nil)
+	if err != nil {
+		return "", fmt.Errorf("加密失败: %v", err)
+	}
+
+	// Base64 编码
+	return base64.StdEncoding.EncodeToString(encryptedData), nil
+}
+
+// RSA-256 + SHA-256 进行解密
+func DecryptRSA(encryptedBase64 string, privateKey *rsa.PrivateKey) ([]byte, error) {
+	// Base64 解码
+	encryptedData, err := base64.StdEncoding.DecodeString(encryptedBase64)
+	if err != nil {
+		return nil, fmt.Errorf("Base64 解码失败: %v", err)
+	}
+
+	// 使用私钥解密
+	decryptedData, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, privateKey, encryptedData, nil)
+	if err != nil {
+		return nil, fmt.Errorf("解密失败: %v", err)
+	}
+
+	return decryptedData, nil
 }
