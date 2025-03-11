@@ -40,6 +40,20 @@ var (
 	}
 )
 
+func GenerateClientId() string {
+	return GenerateRandHex(8)
+}
+
+func GenerateClientSecretHex() string {
+	return GenerateRandHex(16)
+}
+
+func GenerateRandHex(num int) string {
+	b := make([]byte, num) // 32字节
+	rand.Read(b)
+	return hex.EncodeToString(b)
+}
+
 func PrintMemoryUsage() {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
