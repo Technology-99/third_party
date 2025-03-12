@@ -20,8 +20,8 @@ func JwtECDSACommonCreateToken(claims *jwt.StandardClaims, privateKey string) (s
 	return tokenString, claims.ExpiresAt, nil
 }
 
-func JwtECDSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.StandardClaims, error) {
-	key, err := qxCrypto.ParseECDSAPublicKeyFromPEM(pubKey)
+func JwtECDSACommonParseAndVerifyToken(tokenString, certPem string) (*jwt.StandardClaims, error) {
+	key, err := qxCrypto.ParseECDSAPublicKeyFromCert(certPem)
 	if err != nil {
 		return nil, err
 	}
@@ -48,8 +48,8 @@ func JwtECDSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.Standar
 	}
 }
 
-func JwtECDSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
-	key, err := qxCrypto.ParseECDSAPublicKeyFromPEM(pubKey)
+func JwtECDSACommonParse(tokenString, certPem string) (*jwt.Token, error) {
+	key, err := qxCrypto.ParseECDSAPublicKeyFromCert(certPem)
 	if err != nil {
 		return nil, err
 	}

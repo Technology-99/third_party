@@ -35,23 +35,22 @@ func ParseECDSAPrivateKeyFromPEM(privateKeyPEM string) (*ecdsa.PrivateKey, error
 	return privateKey, nil
 }
 
-// **解析 ECDSA 公钥 **
-func ParseECDSAPublicKeyFromPEM(pubKeyPEM string) (*ecdsa.PublicKey, error) {
-	block, _ := pem.Decode([]byte(pubKeyPEM))
+func ParseECDSAPublicKeyFromCert(certPEM string) (*ecdsa.PublicKey, error) {
+	// **解析 PEM 证书**
+	block, _ := pem.Decode([]byte(certPEM))
 	if block == nil {
 		return nil, ErrorInvalidPublicKeyPEMFormat
 	}
-
-	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	// **解析 X.509 证书**
+	cert, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
 		return nil, err
 	}
-
-	ecdsaPubKey, ok := pubKey.(*ecdsa.PublicKey)
+	// **获取公钥**
+	ecdsaPubKey, ok := cert.PublicKey.(*ecdsa.PublicKey)
 	if !ok {
 		return nil, ErrorPublicKeyNotECDSA
 	}
-
 	return ecdsaPubKey, nil
 }
 
