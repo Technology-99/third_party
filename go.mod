@@ -1,6 +1,8 @@
 module github.com/Technology-99/third_party
 
-go 1.19
+go 1.23.0
+
+toolchain go1.23.4
 
 require (
 	github.com/aliyun/aliyun-log-go-sdk v0.1.53
@@ -22,6 +24,7 @@ require (
 	github.com/ua-parser/uap-go v0.0.0-20241012191800-bbb40edc15aa
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.18
 	github.com/zeromicro/go-zero v1.6.1
+	golang.org/x/crypto v0.36.0
 	google.golang.org/grpc v1.60.0
 	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.5.1
@@ -105,10 +108,9 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
