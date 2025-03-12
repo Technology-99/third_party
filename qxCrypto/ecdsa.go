@@ -7,10 +7,53 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"math/big"
 	"time"
 )
+
+var (
+	ErrorInvalidPrivateKeyPEMFormat = errors.New("invalid public key PEM format")
+	ErrorInvalidPublicKeyPEMFormat  = errors.New("invalid public key PEM format")
+	ErrorPublicKeyNotECDSA          = errors.New("public key not ECDSA type")
+)
+
+// **解析 ECDSA 公钥 **
+func ParseECDSAPrivateKeyFromPEM(privateKeyPEM string) (*ecdsa.PrivateKey, error) {
+	block, _ := pem.Decode([]byte(privateKeyPEM))
+	if block == nil {
+		return nil, ErrorInvalidPrivateKeyPEMFormat
+	}
+
+	// **解析 ECDSA 私钥**
+	privateKey, err := x509.ParseECPrivateKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return privateKey, nil
+}
+
+// **解析 ECDSA 公钥 **
+func ParseECDSAPublicKeyFromPEM(pubKeyPEM string) (*ecdsa.PublicKey, error) {
+	block, _ := pem.Decode([]byte(pubKeyPEM))
+	if block == nil {
+		return nil, ErrorInvalidPublicKeyPEMFormat
+	}
+
+	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	ecdsaPubKey, ok := pubKey.(*ecdsa.PublicKey)
+	if !ok {
+		return nil, ErrorPublicKeyNotECDSA
+	}
+
+	return ecdsaPubKey, nil
+}
 
 // note: 生成 ECDSA 公私钥
 func ECDSAGenerateKeys(curve elliptic.Curve) (privateKey *ecdsa.PrivateKey, publicKey *ecdsa.PublicKey, err error) {

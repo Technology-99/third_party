@@ -1,27 +1,35 @@
-package jwts
+package qxJwts
 
 import (
 	"fmt"
+	"github.com/Technology-99/third_party/qxCrypto"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
 
-func JwtCommonCreateToken(claims *jwt.StandardClaims, key string) (string, int64, error) {
-	//采用 HS256 加密算法
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(key))
+func JwtECDSACommonCreateToken(claims *jwt.StandardClaims, privateKey string) (string, int64, error) {
+	key, err := qxCrypto.ParseECDSAPrivateKeyFromPEM(privateKey)
+	if err != nil {
+		return "", -1, err
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	tokenString, err := token.SignedString(key)
 	if err != nil {
 		return "", -1, err
 	}
 	return tokenString, claims.ExpiresAt, nil
 }
 
-func JwtCommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims, error) {
+func JwtECDSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.StandardClaims, error) {
+	key, err := qxCrypto.ParseECDSAPublicKeyFromPEM(pubKey)
+	if err != nil {
+		return nil, err
+	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(key), nil
+		return key, nil
 	})
 	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
 		// 验证过期时间
@@ -40,12 +48,16 @@ func JwtCommonParseAndVerifyToken(tokenString, key string) (*jwt.StandardClaims,
 	}
 }
 
-func JwtCommonParse(tokenString, key string) (*jwt.Token, error) {
+func JwtECDSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
+	key, err := qxCrypto.ParseECDSAPublicKeyFromPEM(pubKey)
+	if err != nil {
+		return nil, err
+	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(key), nil
+		return key, nil
 	})
 	if err != nil {
 		return nil, err
@@ -53,7 +65,7 @@ func JwtCommonParse(tokenString, key string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func JwtCommonVerify(token *jwt.Token, Audience string) (*jwt.StandardClaims, error) {
+func JwtECDSACommonVerify(token *jwt.Token, Audience string) (*jwt.StandardClaims, error) {
 	var err error
 	if claims, ok := token.Claims.(*jwt.StandardClaims); ok && token.Valid {
 		// 验证受众

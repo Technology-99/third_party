@@ -1,13 +1,13 @@
-package jwts
+package qxJwts
 
 import (
 	"fmt"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
 
 func JwtCommonCreateToken(claims *jwt.StandardClaims, key string) (string, int64, error) {
-	//采用 HS256 加密算法
+	//采用 	HMAC-sha256 加密算法
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString([]byte(key))
 	if err != nil {
