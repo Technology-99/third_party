@@ -12,6 +12,12 @@ type BaseModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
+type UniqueIdAdminModel struct {
+	CreatedBy uint `gorm:"index:idx_created_by;column:created_by;comment:创建者;type: varchar(255)" json:"createdBy"`
+	UpdatedBy uint `gorm:"index:idx_created_by;column:updated_by;comment:更新者;type: varchar(255)" json:"updatedBy"`
+	DeletedBy uint `gorm:"index:idx_created_by;column:deleted_by;comment:删除者;type: varchar(255)" json:"deletedBy"`
+}
+
 type BaseAdminModel struct {
 	CreatedBy uint `gorm:"column:created_by;comment:创建者;type: int" json:"createdBy"`
 	UpdatedBy uint `gorm:"column:updated_by;comment:更新者;type: int" json:"updatedBy"`
