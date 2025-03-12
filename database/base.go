@@ -13,9 +13,9 @@ type BaseModel struct {
 }
 
 type UniqueIdAdminModel struct {
-	CreatedBy uint `gorm:"index:idx_created_by;column:created_by;comment:创建者;type: varchar(255)" json:"createdBy"`
-	UpdatedBy uint `gorm:"index:idx_created_by;column:updated_by;comment:更新者;type: varchar(255)" json:"updatedBy"`
-	DeletedBy uint `gorm:"index:idx_created_by;column:deleted_by;comment:删除者;type: varchar(255)" json:"deletedBy"`
+	CreatedBy string `gorm:"index:idx_created_by;column:created_by;comment:创建者;type: varchar(255)" json:"createdBy"`
+	UpdatedBy string `gorm:"index:idx_created_by;column:updated_by;comment:更新者;type: varchar(255)" json:"updatedBy"`
+	DeletedBy string `gorm:"index:idx_created_by;column:deleted_by;comment:删除者;type: varchar(255)" json:"deletedBy"`
 }
 
 type BaseAdminModel struct {
