@@ -14,16 +14,16 @@ import (
 )
 
 var (
-	ErrorInvalidPrivateKeyPEMFormat = errors.New("invalid public key PEM format")
-	ErrorInvalidPublicKeyPEMFormat  = errors.New("invalid public key PEM format")
-	ErrorPublicKeyNotECDSA          = errors.New("public key not ECDSA type")
+	ErrorInvalidECDSAPrivateKeyPEMFormat = errors.New("invalid public key PEM format")
+	ErrorInvalidECDSAPublicKeyPEMFormat  = errors.New("invalid public key PEM format")
+	ErrorPublicKeyNotECDSA               = errors.New("public key not ECDSA type")
 )
 
 // **解析 ECDSA 公钥 **
 func ParseECDSAPrivateKeyFromPEM(privateKeyPEM string) (*ecdsa.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(privateKeyPEM))
 	if block == nil {
-		return nil, ErrorInvalidPrivateKeyPEMFormat
+		return nil, ErrorInvalidECDSAPrivateKeyPEMFormat
 	}
 
 	// **解析 ECDSA 私钥**
@@ -39,7 +39,7 @@ func ParseECDSAPublicKeyFromCert(certPEM string) (*ecdsa.PublicKey, error) {
 	// **解析 PEM 证书**
 	block, _ := pem.Decode([]byte(certPEM))
 	if block == nil {
-		return nil, ErrorInvalidPublicKeyPEMFormat
+		return nil, ErrorInvalidECDSAPublicKeyPEMFormat
 	}
 	// **解析 X.509 证书**
 	cert, err := x509.ParseCertificate(block.Bytes)

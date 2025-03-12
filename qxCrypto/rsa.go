@@ -11,6 +11,47 @@ import (
 	"fmt"
 )
 
+var (
+	ErrorInvalidRsaPrivateKeyPEMFormat = errors.New("invalid public key PEM format")
+	ErrorInvalidRsaPublicKeyPEMFormat  = errors.New("invalid public key PEM format")
+	ErrorPublicKeyNotRsa               = errors.New("public key not rsa type")
+)
+
+// 解析 PEM 格式的公钥
+func ParsePublicKey(pemData string) (*rsa.PublicKey, error) {
+	block, _ := pem.Decode([]byte(pemData))
+	if block == nil {
+		return nil, ErrorInvalidRsaPublicKeyPEMFormat
+	}
+
+	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	rsaPubKey, ok := pubKey.(*rsa.PublicKey)
+	if !ok {
+		return nil, ErrorPublicKeyNotRsa
+	}
+
+	return rsaPubKey, nil
+}
+
+// 解析 PEM 格式的私钥
+func ParsePrivateKey(pemData string) (*rsa.PrivateKey, error) {
+	block, _ := pem.Decode([]byte(pemData))
+	if block == nil {
+		return nil, ErrorInvalidRsaPrivateKeyPEMFormat
+	}
+
+	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return privateKey, nil
+}
+
 // RSA + SHA-256 进行加密
 func RSAEncrypt(plainText []byte, publicKey *rsa.PublicKey) (string, error) {
 	encryptedData, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, publicKey, plainText, nil)
@@ -92,10 +133,7 @@ func RSAGenerateKeys(bits int) (privateKey *rsa.PrivateKey, publicKey *rsa.Publi
 
 // note: 解析私钥到字节
 func RSAParsePrivateKey2Bt(privateKey *rsa.PrivateKey) (prvKeyBt []byte, err error) {
-	privateKeyBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
-	if err != nil {
-		return nil, err
-	}
+	privateKeyBytes := x509.MarshalPKCS1PrivateKey(privateKey)
 	privateKeyPEM := pem.EncodeToMemory(&pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: privateKeyBytes,
