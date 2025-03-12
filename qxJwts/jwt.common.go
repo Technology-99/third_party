@@ -21,9 +21,9 @@ func JwtParseUnverified(token string) (*jwt.MapClaims, error) {
 	}
 
 	// 获取 Payload（Claims）
-	tempclaims, parseJwtClaimsOk := parseToken.Claims.(jwt.MapClaims)
+	tempClaims, parseJwtClaimsOk := parseToken.Claims.(jwt.MapClaims)
 	if !parseJwtClaimsOk {
 		return nil, ErrorJwtClaimsInvalid
 	}
-	return &tempclaims, nil
+	return &tempClaims, nil
 }
