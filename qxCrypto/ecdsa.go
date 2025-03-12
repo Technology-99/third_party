@@ -90,7 +90,7 @@ func ECDSAGenerateECCCertificate(curve elliptic.Curve, subject pkix.Name) (certP
 	}
 
 	// 生成自签名证书
-	certBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &publicKey, privateKey)
+	certBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, publicKey, privateKey)
 	if err != nil {
 		return nil, nil, err
 	}
