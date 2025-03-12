@@ -57,7 +57,8 @@ func ParseECDSAPublicKeyFromPEM(pubKeyPEM string) (*ecdsa.PublicKey, error) {
 
 // note: 生成 ECDSA 公私钥
 func ECDSAGenerateKeys(curve elliptic.Curve) (privateKey *ecdsa.PrivateKey, publicKey *ecdsa.PublicKey, err error) {
-	if curve != elliptic.P256() || curve != elliptic.P384() || curve != elliptic.P521() {
+	switch curve.Params() {
+	case elliptic.P224().Params():
 		return nil, nil, fmt.Errorf("curve must be P256 or P384 or P521")
 	}
 	// **1. 生成 ECDSA 私钥**
