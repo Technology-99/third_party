@@ -3,7 +3,7 @@ package qxJwts
 import (
 	"fmt"
 	"github.com/Technology-99/third_party/qxCrypto"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func JwtECDSACommonParseAndVerifyToken(tokenString, pubKey string) (*jwt.Standar
 		return nil, err
 	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return key, nil
@@ -54,7 +54,7 @@ func JwtECDSACommonParse(tokenString, pubKey string) (*jwt.Token, error) {
 		return nil, err
 	}
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return key, nil
