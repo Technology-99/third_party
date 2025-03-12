@@ -7,95 +7,131 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"golang.org/x/crypto/chacha20poly1305"
-	"io"
 )
 
+const (
+	AES128KeyLen = 16
+	AES192KeyLen = 24
+	AES256KeyLen = 32
+	AESGCMIvLen  = 12
+	AESCCMIvLen  = 13
+	AEsCBCIvLen  = 16
+	AESCTRIvLen  = 16
+)
+
+func GenAESKeyAndIv(KeyLen int, IvLen int) (keyBase, ivBase string, err error) {
+	key := make([]byte, KeyLen)
+	_, err = rand.Read(key)
+	if err != nil {
+		return "", "", err
+	}
+	iv := make([]byte, IvLen)
+	_, err = rand.Read(iv)
+	if err != nil {
+		return "", "", err
+	}
+	return base64.StdEncoding.EncodeToString(key), base64.StdEncoding.EncodeToString(iv), nil
+}
+
 // **AES-GCM 加密**
-func AESEncryptByGCM(plainText, key []byte) (string, []byte, error) {
+func AESEncryptByGCM(plainText []byte, keyBase, ivBase string) (string, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return "", err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return "", err
+	}
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-
-	// 生成随机 Nonce（12 字节）
-	nonce := make([]byte, 12)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return "", nil, err
-	}
-
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-
 	// 加密 + 认证
-	cipherText := aesGCM.Seal(nil, nonce, plainText, nil)
-
-	return base64.StdEncoding.EncodeToString(cipherText), nonce, nil
+	cipherText := aesGCM.Seal(nil, iv, plainText, nil)
+	return base64.StdEncoding.EncodeToString(cipherText), nil
 }
 
 // **AES-GCM 解密**
-func AESDecryptByGCM(cipherTextBase64 string, key, nonce []byte) (string, error) {
+func AESDecryptByGCM(cipherTextBase64 string, keyBase, ivBase string) ([]byte, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return nil, err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return nil, err
+	}
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	cipherText, err := base64.StdEncoding.DecodeString(cipherTextBase64)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-
-	plainText, err := aesGCM.Open(nil, nonce, cipherText, nil)
+	plainText, err := aesGCM.Open(nil, iv, cipherText, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(plainText), nil
+	return plainText, nil
 }
 
 // **AES-CCM 加密**
-func AESEncryptByCCM(plainText, key []byte) (string, []byte, error) {
-	aesCCM, err := chacha20poly1305.NewX(key)
+func AESEncryptByCCM(plainText []byte, keyBase, ivBase string) (string, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-
-	// 生成随机 Nonce（13 字节）
-	nonce := make([]byte, 13)
-	_, err = rand.Read(nonce)
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-
-	cipherText := aesCCM.Seal(nil, nonce, plainText, nil)
-
-	return base64.StdEncoding.EncodeToString(cipherText), nonce, nil
-}
-
-// **AES-CCM 解密**
-func AESDecryptByCCM(cipherTextBase64 string, key, nonce []byte) (string, error) {
 	aesCCM, err := chacha20poly1305.NewX(key)
 	if err != nil {
 		return "", err
+	}
+	cipherText := aesCCM.Seal(nil, iv, plainText, nil)
+
+	return base64.StdEncoding.EncodeToString(cipherText), nil
+}
+
+// **AES-CCM 解密**
+func AESDecryptByCCM(cipherTextBase64 string, keyBase, ivBase string) ([]byte, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return nil, err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return nil, err
+	}
+	aesCCM, err := chacha20poly1305.NewX(key)
+	if err != nil {
+		return nil, err
 	}
 
 	cipherText, err := base64.StdEncoding.DecodeString(cipherTextBase64)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-
-	plainText, err := aesCCM.Open(nil, nonce, cipherText, nil)
+	plainText, err := aesCCM.Open(nil, iv, cipherText, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(plainText), nil
+	return plainText, nil
 }
 
 // **PKCS7 填充**
@@ -113,16 +149,18 @@ func CBCPkcs7Unpad(data []byte) []byte {
 }
 
 // **AES-CBC 加密**
-func AESEncryptByCBC(plainText, key []byte) (string, []byte, error) {
+func AESEncryptByCBC(plainText []byte, keyBase, ivBase string) (string, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return "", err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return "", err
+	}
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", nil, err
-	}
-
-	// 生成随机 IV（16 字节）
-	iv := make([]byte, aes.BlockSize)
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return "", nil, err
+		return "", err
 	}
 
 	// PKCS7 填充
@@ -132,20 +170,29 @@ func AESEncryptByCBC(plainText, key []byte) (string, []byte, error) {
 	mode := cipher.NewCBCEncrypter(block, iv)
 	mode.CryptBlocks(cipherText, plainText)
 
-	return base64.StdEncoding.EncodeToString(cipherText), iv, nil
+	return base64.StdEncoding.EncodeToString(cipherText), nil
 }
 
 // **AES-CBC 解密**
-func AESDecryptByCBC(cipherTextBase64 string, key, iv []byte) (string, error) {
+func AESDecryptByCBC(cipherTextBase64 string, keyBase, ivBase string) ([]byte, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return nil, err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return nil, err
+	}
+
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	// Base64 解码密文
 	cipherText, err := base64.StdEncoding.DecodeString(cipherTextBase64)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	// CBC 解密
@@ -156,39 +203,49 @@ func AESDecryptByCBC(cipherTextBase64 string, key, iv []byte) (string, error) {
 	// PKCS7 去填充
 	plainText = CBCPkcs7Unpad(plainText)
 
-	return string(plainText), nil
+	return plainText, nil
 }
 
 // **AES-CTR 加密**
-func AESEncryptByCTR(plainText, key []byte) (string, []byte, error) {
-	block, err := aes.NewCipher(key)
+func AESEncryptByCTR(plainText []byte, keyBase, ivBase string) (string, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-	// 生成随机 Nonce（IV，16 字节）
-	nonce := make([]byte, aes.BlockSize)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return "", nil, err
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return "", err
 	}
-
-	stream := cipher.NewCTR(block, nonce)
-	cipherText := make([]byte, len(plainText))
-	stream.XORKeyStream(cipherText, plainText)
-
-	return base64.StdEncoding.EncodeToString(cipherText), nonce, nil
-}
-
-// **AES-CTR 解密**
-func AESDecryptByCTR(cipherTextBase64 string, key, nonce []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
 	}
 
-	stream := cipher.NewCTR(block, nonce)
+	stream := cipher.NewCTR(block, iv)
+	cipherText := make([]byte, len(plainText))
+	stream.XORKeyStream(cipherText, plainText)
+
+	return base64.StdEncoding.EncodeToString(cipherText), nil
+}
+
+// **AES-CTR 解密**
+func AESDecryptByCTR(cipherTextBase64 string, keyBase, ivBase string) ([]byte, error) {
+	key, err := base64.StdEncoding.DecodeString(keyBase)
+	if err != nil {
+		return nil, err
+	}
+	iv, err := base64.StdEncoding.DecodeString(ivBase)
+	if err != nil {
+		return nil, err
+	}
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	stream := cipher.NewCTR(block, iv)
 	cipherText, _ := base64.StdEncoding.DecodeString(cipherTextBase64)
 	plainText := make([]byte, len(cipherText))
 	stream.XORKeyStream(plainText, cipherText)
-
-	return string(plainText), nil
+	return plainText, nil
 }
