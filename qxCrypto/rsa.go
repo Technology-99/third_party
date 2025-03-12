@@ -92,7 +92,7 @@ func RSAGenerateKeys(bits int) (privateKey *rsa.PrivateKey, publicKey *rsa.Publi
 
 // note: 解析私钥到字节
 func RSAParsePrivateKey2Bt(privateKey *rsa.PrivateKey) (prvKeyBt []byte, err error) {
-	privateKeyBytes, err := x509.MarshalPKIXPublicKey(privateKey)
+	privateKeyBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
 	if err != nil {
 		return nil, err
 	}
