@@ -14,7 +14,7 @@ const (
 	AES192KeyLen = 24
 	AES256KeyLen = 32
 	AESGCMIvLen  = 12
-	AESCCMIvLen  = 13
+	AESCCMIvLen  = 24
 	AEsCBCIvLen  = 16
 	AESCTRIvLen  = 16
 )
@@ -121,7 +121,6 @@ func AESDecryptByCCM(cipherTextBase64 string, keyBase, ivBase string) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
-
 	cipherText, err := base64.StdEncoding.DecodeString(cipherTextBase64)
 	if err != nil {
 		return nil, err
