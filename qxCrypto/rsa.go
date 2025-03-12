@@ -18,7 +18,7 @@ var (
 )
 
 // 解析 PEM 格式的公钥
-func ParsePublicKey(pemData string) (*rsa.PublicKey, error) {
+func ParseRSAPublicKey(pemData string) (*rsa.PublicKey, error) {
 	block, _ := pem.Decode([]byte(pemData))
 	if block == nil {
 		return nil, ErrorInvalidRsaPublicKeyPEMFormat
@@ -38,7 +38,7 @@ func ParsePublicKey(pemData string) (*rsa.PublicKey, error) {
 }
 
 // 解析 PEM 格式的私钥
-func ParsePrivateKey(pemData string) (*rsa.PrivateKey, error) {
+func ParseRSAPrivateKey(pemData string) (*rsa.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(pemData))
 	if block == nil {
 		return nil, ErrorInvalidRsaPrivateKeyPEMFormat
